@@ -51,7 +51,7 @@
         .btn-clear { background: #e53935; color: white; width: 100%; margin-bottom: 15px; }
         .btn-clear:hover { background: #c62828; }
 
-        /* ปุ่มควบคุมไมค์ภาษาพม่า บนฝั่งเจ้าหน้าที่ (กรณีคนไข้ไม่มีมือถือ) */
+        /* ปุ่มควบคุมไมค์ภาษาพม่า บนฝั่งเจ้าหน้าที่ */
         .btn-mic-officer { background: #4caf50; color: white; font-size: 1.05rem; padding: 12px; border-radius: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; border: none; font-weight: bold; margin-bottom: 15px; }
         .btn-mic-officer.recording { background: #f44336; animation: pulse 1.5s infinite; }
 
@@ -61,11 +61,11 @@
 
         .patient-status { text-align: center; font-size: 1.2rem; font-weight: bold; color: #388e3c; margin-top: 20px; padding: 10px; background: #e8f5e9; border-radius: 6px; }
 
-        /* ปุ่มไมค์สำหรับมือถือผู้ป่วย (ตามเอกสารแนบ 2) */
+        /* ปุ่มไมค์สำหรับมือถือผู้ป่วย */
         .btn-mic-mobile { background: #ffffff; color: #1b5e20; font-size: 1.2rem; padding: 20px; border-radius: 12px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; border: 3px solid #2e7d32; font-weight: bold; margin-top: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .btn-mic-mobile.recording { background: #f44336; color: white; border-color: #d32f2f; animation: pulse 1.5s infinite; }
 
-        /* กล่อง URL แทน QR Code */
+        /* กล่อง URL */
         .url-box { background: #e3f2fd; padding: 10px; border-radius: 8px; margin-bottom: 12px; border: 1px dashed #29b6f6; font-size: 0.9rem; }
         .url-box input { width: 75%; padding: 6px; font-size: 0.85rem; border: 1px solid #90caf9; border-radius: 4px; background: #fff; }
         .url-box button { width: 22%; padding: 6px; font-size: 0.85rem; background: #0288d1; color: white; border: none; border-radius: 4px; cursor: pointer; }
@@ -79,7 +79,6 @@
 </head>
 <body>
 
-    <!-- Header แสดงชื่อแอป และชื่อหน่วยงาน -->
     <div class="app-header">
         <div>
             <h1>🏥 ระบบซักประวัติและสื่อสารแปลภาษาไทย-พม่า (Thai-Burmese Health Translator)</h1>
@@ -89,16 +88,14 @@
         </div>
     </div>
 
-    <!-- Container รวมหน้าจอ -->
     <div class="main-container">
         
-        <!-- ==================== 1. หน้าจอเจ้าหน้าที่ (PC Control Room) ==================== -->
+        <!-- 1. หน้าจอเจ้าหน้าที่ (PC Control) -->
         <div id="officerPanel" class="panel officer-panel">
             <h2>👨‍⚕️ หน้าจอเจ้าหน้าที่ (PC Control)</h2>
             
             <div id="connectionStatus" class="connection-status status-disconnected">🔴 มือถือผู้ป่วยยังไม่ได้เชื่อมต่อ</div>
 
-            <!-- กล่องแสดง URL สำหรับทำ QR Code ไปแปะโต๊ะ -->
             <div class="url-box">
                 <b>🔗 ลิงก์สำหรับผู้รับบริการสแกน (นำไปทำ QR Code แปะโต๊ะ):</b><br>
                 <div style="margin-top: 5px; display: flex; gap: 5px;">
@@ -107,7 +104,6 @@
                 </div>
             </div>
             
-            <!-- หมวดที่ 1 -->
             <div class="category-group">
                 <label>📋 หมวดที่ 1: ข้อมูลทั่วไป</label>
                 <select class="question-select" onchange="selectQuestion(this)">
@@ -121,7 +117,6 @@
                 </select>
             </div>
 
-            <!-- หมวดที่ 2 -->
             <div class="category-group">
                 <label>🩺 หมวดที่ 2: การมารับบริการ / อาการเจ็บป่วย</label>
                 <select class="question-select" onchange="selectQuestion(this)">
@@ -133,7 +128,6 @@
                 </select>
             </div>
 
-            <!-- หมวดที่ 3 -->
             <div class="category-group">
                 <label>💊 หมวดที่ 3: การรับประทานยาและคำแนะนำ</label>
                 <select class="question-select" onchange="selectQuestion(this)">
@@ -142,7 +136,7 @@
                     <option value="รับประทาน 1 เม็ด วันละ 3 ครั้ง หลังอาหาร" data-my="အစားစားပြီးနောက် ဆေး ၁ လုံး၊ တစ်နေ့ ၃ ကြိမ် သောက်ပါ။">2. รับประทาน 1 เม็ด วันละ 3 ครั้ง หลังอาหาร</option>
                     <option value="รับประทาน 1 เม็ด วันละ 3 ครั้ง ก่อนอาหาร" data-my="အစားမစားခင် ဆေး ၁ လုံး၊ တစ်နေ့ ၃ ကြိမ် သောက်ပါ။">3. รับประทาน 1 เม็ด วันละ 3 ครั้ง ก่อนอาหาร</option>
                     <option value="รับประทาน 1 เม็ด วันละ 2 ครั้ง เช้า-เย็น หลังอาหาร" data-my="အစားစားပြီးနောက် မနက်တစ်ကြိမ် ညတစ်ကြိမ်၊ ဆေး ၁ လုံး သောက်ပါ။">4. รับประทาน 1 เม็ด วันละ 2 ครั้ง (เช้า-เย็น)</option>
-                    <option value="รับประทานก่อนนอน 1 เม็ด" data-my="အိပ်ရာဝင်ခါနီး ဆေး ၁ လုံး သောက်ပါ။">5. รับประทานก่อนนอน 1 เม็ด</option>
+                    <option value="รับประทานนอน 1 เม็ด" data-my="အိပ်ရာဝင်ခါနီး ဆေး ၁ လုံး သောက်ပါ။">5. รับประทานก่อนนอน 1 เม็ด</option>
                 </select>
             </div>
 
@@ -152,7 +146,6 @@
             
             <button class="action-btn btn-clear" onclick="clearCase()">🗑️ ล้างเคสเก่า (Clear Case สำหรับผู้ป่วยคนถัดไป)</button>
 
-            <!-- กรณีผู้ป่วยไม่มีมือถือ ใช้ไมค์คอมพิวเตอร์ -->
             <label><b>หรือใช้ไมโครโฟนคอมพิวเตอร์ (กรณีผู้ป่วยไม่มีมือถือ):</b></label>
             <button id="micBtnOfficer" class="btn-mic-officer" onclick="toggleOfficerSpeech()">
                 🎤 กดเพื่อให้คนไข้พูดผ่านไมค์คอมพิวเตอร์
@@ -162,7 +155,7 @@
             <div id="thaiTranslation" class="thai-result">คำตอบจากผู้ป่วยจะมาแสดงตรงนี้...</div>
         </div>
 
-        <!-- ==================== 2. หน้าจอมือถือผู้ป่วย (Patient Mobile View) ==================== -->
+        <!-- 2. หน้าจอมือถือผู้ป่วย -->
         <div id="patientMobilePanel" class="panel patient-mobile-panel">
             <h2>🇲🇲 ฝั่งผู้ป่วย (Patient Display)</h2>
             
@@ -173,7 +166,6 @@
                 🔊 รอฟังเสียง หรืออ่านข้อความจากเจ้าหน้าที่
             </div>
 
-            <!-- ปุ่มไมค์มือถือผู้ป่วย -->
             <button id="mobileMicBtn" class="btn-mic-mobile" onclick="toggleMobileSpeech()">
                 🎤 กดไมล์พูดภาษาพม่า (မြန်မာလိုပြောဖို့ မိုက်ခရိုဖုန်းကို နှိပ်ပါ။)
             </button>
@@ -197,7 +189,6 @@
             initOfficerMode();
         }
 
-        // ==================== โหมดเจ้าหน้าที่ (PC Control) ====================
         function initOfficerMode() {
             const currentUrl = window.location.href.split('?')[0];
             const patientUrl = currentUrl + '?mode=patient';
@@ -271,10 +262,9 @@
             if (conn && conn.open) {
                 conn.send({ type: 'QUESTION', text: myText });
             }
-            speakBurmese(myText); // ออกเสียงทาง PC ด้วย
+            speakBurmese(myText);
         }
 
-        // กรณีใช้ไมค์คอมพิวเตอร์
         let officerRecognition;
         let isOfficerRecording = false;
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
@@ -313,7 +303,6 @@
             }
         }
 
-        // ==================== โหมดมือถือผู้ป่วย (Patient Mobile View) ====================
         function initPatientMode() {
             peer = new Peer();
 
@@ -327,7 +316,7 @@
                 conn.on('data', (data) => {
                     if (data.type === 'QUESTION') {
                         document.getElementById('burmeseTextMobile').innerText = data.text;
-                        speakBurmese(data.text); // มือถืออ่านออกเสียงพม่าแบบชัดเจน
+                        speakBurmese(data.text);
                     } else if (data.type === 'CLEAR_SCREEN') {
                         document.getElementById('burmeseTextMobile').innerText = 'မင်္ဂလာပါ (สวัสดีครับ/ค่ะ)';
                         document.getElementById('patientStatusMobile').innerText = '🔊 รอฟังเสียง หรืออ่านข้อความจากเจ้าหน้าที่';
@@ -395,14 +384,15 @@
             document.getElementById(targetElementId).innerText = data.responseData.translatedText;
         }
 
-        // ==================== ระบบเสียงพม่าแบบออนไลน์ (แก้ปัญหาอ่านเป็นภาษาอังกฤษ) ====================
+        // ระบบเสียงพูดสังเคราะห์มาตรฐาน (Web Speech API)
         function speakBurmese(text) {
-            // ใช้ Google Translate TTS Audio เพื่อให้มือถือทุกรุ่นพูดภาษาพม่าชัดเจน 100% ไม่สะกดเป็นอังกฤษ
-            const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=my&client=tw-ob`;
-            const audio = new Audio(audioUrl);
-            audio.play().catch(error => {
-                console.log("Audio autoplay prevented or error:", error);
-            });
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // ล้างคิวเสียงเก่าทิ้ง
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'my-MM';
+                utterance.rate = 0.95; // ปรับความเร็วให้ฟังชัดเจน
+                window.speechSynthesis.speak(utterance);
+            }
         }
     </script>
 </body>

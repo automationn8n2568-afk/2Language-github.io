@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ระบบซักประวัติและสื่อสารแปลภาษาไทย-พม่า - รพ.สต.บ้านขอม</title>
-    <!-- โหลด PeerJS สำหรับเชื่อมต่อมือถือกับ PC แบบถาวร -->
-    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     <style>
         * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { margin: 0; padding: 10px; background-color: #f0f2f5; display: flex; flex-direction: column; min-height: 98vh; }
+        body { margin: 0; padding: 10px; background-color: #f0f2f5; display: flex; flex-direction: column; height: 98vh; }
         
         /* Header ป้ายชื่อ Application และ หน่วยงาน */
         .app-header {
@@ -21,51 +19,47 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
         }
-        .app-header h1 { margin: 0; font-size: 1.3rem; font-weight: bold; }
-        .app-header .sub-title { font-size: 0.9rem; opacity: 0.95; background: rgba(255, 255, 255, 0.2); padding: 4px 12px; border-radius: 20px; }
+        .app-header h1 { margin: 0; font-size: 1.4rem; font-weight: bold; }
+        .app-header .sub-title { font-size: 0.95rem; opacity: 0.95; background: rgba(255, 255, 255, 0.2); padding: 4px 12px; border-radius: 20px; }
 
         /* Container หลัก */
-        .main-container { display: flex; gap: 15px; flex: 1; flex-wrap: wrap; }
+        .main-container { display: flex; gap: 15px; flex: 1; overflow: hidden; }
 
-        .panel { flex: 1; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; min-width: 320px; }
-        .officer-panel { border-top: 6px solid #0288d1; }
-        .patient-panel { border-top: 6px solid #2e7d32; background-color: #f9fbe7; }
+        /* Layout ฝั่งเจ้าหน้าที่ (ตามเอกสารแนบ 1) */
+        .panel { flex: 1; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow-y: auto; }
+        .officer-panel { border-top: 6px solid #0288d1; flex: 1; }
+        .patient-mobile-panel { border-top: 6px solid #2e7d32; background-color: #f9fbe7; flex: 1; display: none; }
 
         h2 { margin-top: 0; color: #333; font-size: 1.2rem; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
         
+        /* Dropdown หมวดหมู่คำถาม */
         .category-group { margin-bottom: 10px; }
         .category-group label { display: block; font-size: 0.85rem; color: #0288d1; margin-bottom: 3px; font-weight: bold; }
         select.question-select { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #0288d1; background: #e1f5fe; font-size: 0.9rem; cursor: pointer; }
-        
-        textarea { width: 100%; height: 50px; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 0.95rem; margin-bottom: 8px; resize: none; }
+        select.question-select:hover { background: #b3e5fc; }
+
+        /* ช่อง พิมพ์/แสดงข้อความ */
+        textarea { width: 100%; height: 60px; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 0.95rem; margin-bottom: 8px; resize: none; }
         
         button.action-btn { padding: 10px; font-size: 0.95rem; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        .btn-send { background: #0288d1; color: white; width: 100%; margin-bottom: 8px; }
+        .btn-send { background: #0288d1; color: white; width: 100%; margin-bottom: 15px; }
+        .btn-send:hover { background: #0277bd; }
         
-        /* ปุ่มล้างเคสเก่า (Clear Case) */
-        .btn-clear { background: #e53935; color: white; width: 100%; margin-bottom: 15px; }
-        .btn-clear:hover { background: #c62828; }
+        /* ปุ่มควบคุมไมค์ภาษาพม่า บนฝั่งเจ้าหน้าที่ */
+        .btn-mic-officer { background: #4caf50; color: white; font-size: 1.05rem; padding: 12px; border-radius: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; border: none; font-weight: bold; margin-bottom: 15px; }
+        .btn-mic-officer:hover { background: #43a047; }
+        .btn-mic-officer.recording { background: #f44336; animation: pulse 1.5s infinite; }
 
-        /* ดีไซน์หน้าจอผู้ป่วย (ตามเอกสารแนบ 2) */
-        .burmese-display { font-size: 2rem; font-weight: bold; color: #1b5e20; background: #ffffff; padding: 25px; border-radius: 8px; border: 2px dashed #81c784; min-height: 160px; margin-top: 10px; text-align: center; display: flex; align-items: center; justify-content: center; word-break: break-word; }
-        .patient-status { text-align: center; font-size: 1.1rem; font-weight: bold; color: #388e3c; margin-top: 15px; padding: 10px; background: #e8f5e9; border-radius: 6px; }
-        
-        /* ปุ่มไมล์มือถือผู้ป่วย (ตามเอกสารแนบ 2) */
+        /* ฝั่งแสดงผลผู้ป่วย / มือถือ */
+        .burmese-display { font-size: 2.2rem; font-weight: bold; color: #1b5e20; background: #ffffff; padding: 25px; border-radius: 8px; border: 2px dashed #81c784; min-height: 160px; margin-top: 10px; text-align: center; display: flex; align-items: center; justify-content: center; word-break: break-word; }
+        .thai-result { font-size: 1.2rem; color: #d32f2f; font-weight: bold; background: #fff3e0; padding: 12px; border-radius: 8px; min-height: 70px; border-left: 5px solid #ff9800; }
+
+        .patient-status { text-align: center; font-size: 1.2rem; font-weight: bold; color: #388e3c; margin-top: 20px; padding: 10px; background: #e8f5e9; border-radius: 6px; }
+
+        /* ปุ่มไมค์สำหรับมือถือผู้ป่วยโดยเฉพาะ */
         .btn-mic-mobile { background: #ffffff; color: #1b5e20; font-size: 1.2rem; padding: 20px; border-radius: 12px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; border: 3px solid #2e7d32; font-weight: bold; margin-top: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .btn-mic-mobile.recording { background: #f44336; color: white; border-color: #d32f2f; animation: pulse 1.5s infinite; }
-
-        .thai-result { font-size: 1.2rem; color: #d32f2f; font-weight: bold; background: #fff3e0; padding: 12px; border-radius: 8px; min-height: 60px; border-left: 5px solid #ff9800; }
-
-        /* QR Code Box สำหรับ PC */
-        .qr-box { background: #e3f2fd; padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 15px; border: 1px dashed #29b6f6; }
-        .qr-box img { width: 130px; height: 130px; margin-top: 5px; }
-
-        .connection-status { font-size: 0.85rem; padding: 4px 10px; border-radius: 4px; display: inline-block; font-weight: bold; margin-bottom: 10px; }
-        .status-disconnected { background: #ffebee; color: #c62828; }
-        .status-connected { background: #e8f5e9; color: #2e7d32; }
 
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
     </style>
@@ -82,19 +76,12 @@
         </div>
     </div>
 
+    <!-- Container รวมหน้าจอ -->
     <div class="main-container">
         
-        <!-- ==================== ฝั่งเจ้าหน้าที่ (PC View - ตามเอกสารแนบ 1) ==================== -->
-        <div id="officerContainer" class="panel officer-panel">
-            <h2>👨‍⚕️ หน้าจอเจ้าหน้าที่ (PC Control)</h2>
-            
-            <div id="connectionStatus" class="connection-status status-disconnected">🔴 มือถือผู้ป่วยยังไม่ได้เชื่อมต่อ</div>
-
-            <!-- กล่องแสดง QR Code ถาวรให้มือถือสแกน -->
-            <div class="qr-box">
-                <span style="font-size: 0.9rem; font-weight: bold; color: #0288d1;">📱 สแกน QR Code นี้ด้วยมือถือผู้ป่วย (พิมพ์แปะโต๊ะได้เลย):</span><br>
-                <img id="qrCodeImg" src="" alt="กำลังสร้าง QR Code...">
-            </div>
+        <!-- ==================== 1. หน้าจอเจ้าหน้าที่ (เปิดบน PC ตามเอกสารแนบ 1) ==================== -->
+        <div id="officerPanel" class="panel officer-panel">
+            <h2>👨‍⚕️ หน้าจอเจ้าหน้าที่ (PC Control Room)</h2>
             
             <!-- หมวดที่ 1 -->
             <div class="category-group">
@@ -137,27 +124,32 @@
 
             <label for="customText"><b>พิมพ์ข้อความเพิ่มเติม (ถ้ามี):</b></label>
             <textarea id="customText" placeholder="พิมพ์ข้อความภาษาไทยที่ต้องการสื่อสาร..."></textarea>
-            <button class="action-btn btn-send" onclick="sendCustomText()">ส่งข้อความนี้ ➔ ไปที่มือถือผู้ป่วย</button>
-            
-            <!-- ปุ่มล้างเคสเก่า (Clear Case) -->
-            <button class="action-btn btn-clear" onclick="clearCase()">🗑️ ล้างเคสเก่า (Clear Case สำหรับผู้ป่วยคนถัดไป)</button>
+            <button class="action-btn btn-send" onclick="translateAndSpeakTH()">ส่งข้อความนี้ ➔ ออกเสียงพม่าให้คนไข้ฟัง</button>
+
+            <hr style="width:100%; border:0; border-top:1px solid #ccc; margin: 10px 0;">
+
+            <!-- ปุ่มให้เจ้าหน้าที่กด เพื่ออัดเสียงคนไข้พม่า (กรณีใช้ไมค์คอมพิวเตอร์) -->
+            <label><b>ฟังคำตอบจากคนไข้พม่า (ผ่านไมค์ PC):</b></label>
+            <button id="micBtnOfficer" class="btn-mic-officer" onclick="toggleSpeechRecognition()">
+                🎤 กดปุ่มเพื่อให้คนไข้พูดผ่านไมค์คอมพิวเตอร์
+            </button>
 
             <label><b>คำตอบจากผู้ป่วย (แปลเป็นไทย):</b></label>
             <div id="thaiTranslation" class="thai-result">คำตอบจากผู้ป่วยจะมาแสดงตรงนี้...</div>
         </div>
 
-        <!-- ==================== ฝั่งผู้ป่วย (Mobile View - ตามเอกสารแนบ 2) ==================== -->
-        <div id="patientContainer" class="panel patient-panel" style="display: none;">
-            <h2>🇲🇲 ฝั่งผู้ป่วย (Patient Display)</h2>
+        <!-- ==================== 2. หน้าจอมือถือผู้ป่วย (เปิดผ่าน URL มือถือ) ==================== -->
+        <div id="patientMobilePanel" class="panel patient-mobile-panel">
+            <h2>🇲🇲 ฝั่งผู้ป่วย (Patient Mobile View)</h2>
             
             <p style="margin:5px 0;"><b>ข้อความจากเจ้าหน้าที่ (စာတို):</b></p>
-            <div id="burmeseText" class="burmese-display">မင်္ဂလာပါ (สวัสดีครับ/ค่ะ)</div>
+            <div id="burmeseTextMobile" class="burmese-display">မင်္ဂလာပါ (สวัสดีครับ/ค่ะ)</div>
 
-            <div id="patientStatus" class="patient-status">
+            <div id="patientStatusMobile" class="patient-status">
                 🔊 รอฟังเสียง หรืออ่านข้อความจากเจ้าหน้าที่
             </div>
 
-            <!-- ปุ่มไมล์มือถือผู้ป่วย ตามภาพเอกสารแนบ 2 -->
+            <!-- ปุ่มไมค์มือถือผู้ป่วย ตามภาพเอกสารแนบ 2 -->
             <button id="mobileMicBtn" class="btn-mic-mobile" onclick="toggleMobileSpeech()">
                 🎤 กดไมล์พูดภาษาพม่า (မြန်မာလိုပြောဖို့ မိုက်ခရိုဖုန်းကို နှိပ်ပါ။)
             </button>
@@ -166,77 +158,55 @@
     </div>
 
     <script>
-        let peer;
-        let conn;
-        let isMobileRecording = false;
-        
-        // กำหนด ID ห้องประจำของ รพ.สต.บ้านขอม ให้เป็นค่าคงที่ (QR Code จะไม่เปลี่ยนอีกต่อไป)
-        const FIXED_OFFICER_ID = 'bh-bankhom-officer-main';
-
+        // ตรวจสอบ URL ว่าเป็นโหมดมือถือผู้ป่วยหรือไม่ (ถ้าใส่ ?mode=patient ต่อท้าย URL)
         const urlParams = new URLSearchParams(window.location.search);
-        const hostId = urlParams.get('host');
+        const isPatientMode = urlParams.get('mode') === 'patient';
 
-        // ตรวจสอบว่าเปิดด้วยโหมดไหน (ถ้ามี ?host ใน URL แสดงว่าเป็นมือถือผู้ป่วย)
-        if (hostId) {
-            document.getElementById('officerContainer').style.display = 'none';
-            document.getElementById('patientContainer').style.display = 'flex';
-            initPatientMode(hostId);
-        } else {
-            initOfficerMode();
+        if (isPatientMode) {
+            document.getElementById('officerPanel').style.display = 'none';
+            document.getElementById('patientMobilePanel').style.display = 'flex';
         }
 
-        // ==================== โหมดเจ้าหน้าที่ (PC Control) ====================
-        function initOfficerMode() {
-            peer = new Peer(FIXED_OFFICER_ID);
+        // ==================== ฟังก์ชันฝั่งเจ้าหน้าที่ (PC) ====================
+        let recognition;
+        let isRecording = false;
 
-            peer.on('open', (id) => {
-                generateQRCode(id);
-            });
+        if (!isPatientMode && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.lang = 'my-MM'; // ฟังเสียงภาษาพม่า
+            recognition.continuous = false;
+            recognition.interimResults = false;
 
-            // กรณีเปิดแท็บค้างไว้แล้ว ID ถูกใช้ไปก่อนหน้า ให้ข้ามมารับการเชื่อมต่อได้เลย
-            peer.on('error', (err) => {
-                if (err.type === 'unavailable-id') {
-                    console.log("ID already in use, reusing connection...");
-                    generateQRCode(FIXED_OFFICER_ID);
+            recognition.onresult = function(event) {
+                const burmeseSpeech = event.results[0][0].transcript;
+                translateBurmeseToThai(burmeseSpeech, 'thaiTranslation');
+            };
+
+            recognition.onend = function() {
+                isRecording = false;
+                const micBtn = document.getElementById('micBtnOfficer');
+                if(micBtn) {
+                    micBtn.classList.remove('recording');
+                    micBtn.innerHTML = '🎤 กดปุ่มเพื่อให้คนไข้พูดผ่านไมค์คอมพิวเตอร์';
                 }
-            });
-
-            peer.on('connection', (incomingConn) => {
-                conn = incomingConn;
-                document.getElementById('connectionStatus').className = 'connection-status status-connected';
-                document.getElementById('connectionStatus').innerText = '🟢 มือถือผู้ป่วยเชื่อมต่อสำเร็จแล้ว';
-
-                conn.on('data', (data) => {
-                    if (data.type === 'PATIENT_SPEECH') {
-                        translateBurmeseToThai(data.text);
-                    }
-                });
-
-                conn.on('close', () => {
-                    document.getElementById('connectionStatus').className = 'connection-status status-disconnected';
-                    document.getElementById('connectionStatus').innerText = '🔴 มือถือผู้ป่วยตัดการเชื่อมต่อ';
-                });
-            });
+            };
         }
 
-        function generateQRCode(id) {
-            const currentUrl = window.location.href.split('?')[0];
-            const patientUrl = currentUrl + '?host=' + id;
-            
-            // สร้าง QR Code จาก URL คงที่
-            document.getElementById('qrCodeImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(patientUrl)}`;
-        }
-
-        // ฟังก์ชันล้างเคสเก่า (Clear Case)
-        function clearCase() {
-            document.getElementById('customText').value = '';
-            document.getElementById('thaiTranslation').innerText = 'คำตอบจากผู้ป่วยจะมาแสดงตรงนี้...';
-            
-            // ส่งคำสั่งไปล้างหน้าจอมือถือผู้ป่วยด้วย
-            if (conn && conn.open) {
-                conn.send({ type: 'CLEAR_SCREEN' });
+        function toggleSpeechRecognition() {
+            if (!recognition) {
+                alert('เบราว์เซอร์นี้ไม่รองรับระบบแปลงเสียง');
+                return;
             }
-            alert('ล้างข้อมูลเคสเก่าเรียบร้อย พร้อมรับผู้ป่วยคนถัดไปครับ');
+            const micBtn = document.getElementById('micBtnOfficer');
+            if (!isRecording) {
+                recognition.start();
+                isRecording = true;
+                micBtn.classList.add('recording');
+                micBtn.innerHTML = '🔴 กำลังฟัง... เชิญคนไข้พูดใส่ไมค์ PC ได้เลย';
+            } else {
+                recognition.stop();
+            }
         }
 
         function selectQuestion(selectElement) {
@@ -245,111 +215,94 @@
             
             if (thText) {
                 document.getElementById('customText').value = thText;
-                sendDataToPatient(myText);
+                speakBurmese(myText); // ออกเสียงพม่าทางลำโพง PC
                 setTimeout(() => { selectElement.selectedIndex = 0; }, 400);
             }
         }
 
-        async function sendCustomText() {
+        async function translateAndSpeakTH() {
             const textTH = document.getElementById('customText').value;
             if (!textTH) return;
 
             const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(textTH)}&langpair=th|my`);
             const data = await res.json();
-            const myText = data.responseData.translatedText;
+            const burmeseTranslation = data.responseData.translatedText;
 
-            sendDataToPatient(myText);
+            speakBurmese(burmeseTranslation);
         }
 
-        function sendDataToPatient(myText) {
-            if (conn && conn.open) {
-                conn.send({ type: 'QUESTION', text: myText });
-            }
-            speakBurmese(myText);
-        }
-
-        async function translateBurmeseToThai(textMY) {
-            document.getElementById('thaiTranslation').innerText = "กำลังแปลคำตอบ: " + textMY + "...";
+        async function translateBurmeseToThai(textMY, targetElementId) {
+            document.getElementById(targetElementId).innerText = "กำลังแปลคำตอบ: " + textMY + "...";
+            
             const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(textMY)}&langpair=my|th`);
             const data = await res.json();
-            document.getElementById('thaiTranslation').innerText = data.responseData.translatedText;
+            document.getElementById(targetElementId).innerText = data.responseData.translatedText;
         }
 
+        // แก้ไขปัญหาเสียงอ่านออกเป็นอังกฤษ: ค้นหาเสียงพม่าแท้ในระบบโดยเฉพาะ
         function speakBurmese(text) {
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'my-MM';
+            utterance.lang = 'my-MM'; // กำหนดรหัสภาษาพม่า
+            
+            const voices = window.speechSynthesis.getVoices();
+            const burmeseVoice = voices.find(v => v.lang.includes('my') || v.lang.includes('MM'));
+            if (burmeseVoice) {
+                utterance.voice = burmeseVoice;
+            }
+            
             window.speechSynthesis.speak(utterance);
         }
 
-        // ==================== โหมดผู้ป่วย (Mobile View) ====================
-        function initPatientMode(targetHostId) {
-            peer = new Peer();
-
-            peer.on('open', () => {
-                conn = peer.connect(targetHostId);
-                
-                conn.on('open', () => {
-                    console.log("Connected to Officer PC");
-                });
-
-                conn.on('data', (data) => {
-                    if (data.type === 'QUESTION') {
-                        document.getElementById('burmeseText').innerText = data.text;
-                        speakBurmese(data.text);
-                    } else if (data.type === 'CLEAR_SCREEN') {
-                        // รีเซ็ตหน้าจอมือถือเมื่อเจ้าหน้าที่กดเคลียร์เคส
-                        document.getElementById('burmeseText').innerText = 'မင်္ဂလာပါ (สวัสดีครับ/ค่ะ)';
-                        document.getElementById('patientStatus').innerText = '🔊 รอฟังเสียง หรืออ่านข้อความจากเจ้าหน้าที่';
-                        document.getElementById('patientStatus').style.color = '#388e3c';
-                    }
-                });
-            });
+        // โหลดเสียงล่วงหน้า
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
         }
 
-        let recognition;
-        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            recognition = new SpeechRecognition();
-            recognition.lang = 'my-MM';
-            recognition.continuous = false;
-            recognition.interimResults = false;
+        // ==================== ฟังก์ชันฝั่งมือถือผู้ป่วย ====================
+        let mobileRecognition;
+        let isMobileRecording = false;
 
-            recognition.onresult = function(event) {
+        if (isPatientMode && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            mobileRecognition = new SpeechRecognition();
+            mobileRecognition.lang = 'my-MM';
+            mobileRecognition.continuous = false;
+            mobileRecognition.interimResults = false;
+
+            mobileRecognition.onresult = function(event) {
                 const speechText = event.results[0][0].transcript;
-                document.getElementById('burmeseText').innerText = "ที่คุณพูด: " + speechText;
-                
-                if (conn && conn.open) {
-                    conn.send({ type: 'PATIENT_SPEECH', text: speechText });
-                }
+                document.getElementById('burmeseTextMobile').innerText = "ที่คุณพูด: " + speechText;
+                // ในโหมดมือถือเดี่ยว หากต้องการส่งข้อมูลกลับ PC แนะนำให้ใช้พิมพ์หรือเชื่อมต่อ แต่เบื้องต้นระบบนี้แยกอิสระเพื่อให้คนไข้พูดทวนให้เจ้าหน้าที่ฟังสดๆ หรือใช้ระบบเดิม
             };
 
-            recognition.onend = function() {
+            mobileRecognition.onend = function() {
                 isMobileRecording = false;
                 const micBtn = document.getElementById('mobileMicBtn');
-                micBtn.classList.remove('recording');
-                micBtn.innerHTML = '🎤 กดไมล์พูดภาษาพม่า (မြန်မာလိုပြောဖို့ မိုက်ခရိုဖုန်းကို နှိပ်ပါ။)';
-                document.getElementById('patientStatus').innerText = '🔊 รอฟังเสียง หรืออ่านข้อความจากเจ้าหน้าที่';
-                document.getElementById('patientStatus').style.color = '#388e3c';
+                if(micBtn) {
+                    micBtn.classList.remove('recording');
+                    micBtn.innerHTML = '🎤 กดไมล์พูดภาษาพม่า (မြန်မာလိုပြောဖို့ မိုက်ခရိုဖုန်းကို နှိပ်ပါ။)';
+                }
+                document.getElementById('patientStatusMobile').innerText = '🔊 พร้อมใช้งาน';
             };
         }
 
         function toggleMobileSpeech() {
-            if (!recognition) {
-                alert('เบราว์เซอร์มือถือนี้ไม่รองรับการแปลงเสียงพูด แนะนำให้ใช้ Google Chrome ครับ');
+            if (!mobileRecognition) {
+                alert('เบราว์เซอร์มือถือไม่รองรับการแปลงเสียง แนะนำให้ใช้ Google Chrome ครับ');
                 return;
             }
+            const micBtn = document.getElementById('mobileMicBtn');
+            const status = document.getElementById('patientStatusMobile');
 
             if (!isMobileRecording) {
-                recognition.start();
+                mobileRecognition.start();
                 isMobileRecording = true;
-                const micBtn = document.getElementById('mobileMicBtn');
                 micBtn.classList.add('recording');
                 micBtn.innerHTML = '🔴 กำลังฟัง... พูดภาษาพม่าได้เลย (စကားပြောပါ)';
-                
-                document.getElementById('patientStatus').innerText = '🎙️ กำลังฟังเสียงของคุณอยู่...';
-                document.getElementById('patientStatus').style.color = '#d32f2f';
+                status.innerText = '🎙️ กำลังฟังเสียงของคุณ...';
+                status.style.color = '#d32f2f';
             } else {
-                recognition.stop();
+                mobileRecognition.stop();
             }
         }
     </script>

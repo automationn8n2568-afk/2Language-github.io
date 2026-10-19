@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบซักประวัติและสื่อสารแปลภาษาไทย-พม่า - รพ.สต.บ้านขอม</title>
+    <!-- โหลด PeerJS สำหรับเชื่อมต่อมือถือกับ PC แบบไม่ต้องใช้ Server หรือ Firebase -->
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { margin: 0; padding: 10px; background-color: #f0f2f5; display: flex; flex-direction: column; min-height: 98vh; }
+        
+        /* Header ป้ายชื่อ Application และ หน่วยงาน */
+        .app-header {
+            background: linear-gradient(135deg, #0288d1, #005b9f);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .app-header h1 { margin: 0; font-size: 1.3rem; font-weight: bold; }
+        .app-header .sub-title { font-size: 0.9rem; opacity: 0.95; background: rgba(255, 255, 255, 0.2); padding: 4px 12px; border-radius: 20px; }
+
+        /* Container หลัก */
+        .main-container { display: flex; gap: 15px; flex: 1; flex-wrap: wrap; }
+
+        .panel { flex: 1; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; min-width: 320px; }
+        .officer-panel { border-top: 6px solid #0288d1; }
+        .patient-panel { border-top: 6px solid #2e7d32; background-color: #f9fbe7; }
+
+        h2 { margin-top: 0; color: #333; font-size: 1.2rem; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+        
+        .category-group { margin-bottom: 10px; }
+        .category-group label { display: block; font-size: 0.85rem; color: #0288d1; margin-bottom: 3px; font-weight: bold; }
+        select.question-select { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #0288d1; background: #e1f5fe; font-size: 0.9rem; cursor: pointer; }
+        
+        textarea { width: 100%; height: 50px; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 0.95rem; margin-bottom: 8px; resize: none; }
+        
+        button.action-btn { padding: 10px; font-size: 0.95rem; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .btn-send { background: #0288d1; color: white; width: 100%; margin-bottom: 15px; }
+
+        /* ดีไซน์หน้าจอผู้ป่วย (ตามเอกสารแนบ 2) */
+        .burmese-display { font-size: 2rem; font-weight: bold; color: #1b5e20; background: #ffffff; padding: 25px; border-radius: 8px; border: 2px dashed #81c784; min-height: 160px; margin-top: 10px; text-align: center; display: flex; align-items: center; justify-content: center; word-break: break-word; }
+        .patient-status { text-align: center; font-size: 1.1rem; font-weight: bold; color: #388e3c; margin-top: 15px; padding: 10px; background: #e8f5e9; border-radius: 6px; }
+        
+        /* ปุ่มไมล์มือถือผู้ป่วย (ตามเอกสารแนบ 2) */
+        .btn-mic-mobile { background: #ffffff; color: #1b5e20; font-size: 1.2rem; padding: 20px; border-radius: 12px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; border: 3px solid #2e7d32; font-weight: bold; margin-top: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .btn-mic-mobile.recording { background: #f44336; color: white; border-color: #d32f2f; animation: pulse 1.5s infinite; }
+
+        .thai-result { font-size: 1.2rem; color: #d32f2f; font-weight: bold; background: #fff3e0; padding: 12px; border-radius: 8px; min-height: 60px; border-left: 5px solid #ff9800; }
+
+        /* QR Code Box สำหรับ PC */
+        .qr-box { background: #e3f2fd; padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 15px; border: 1px dashed #29b6f6; }
+        .qr-box img { width: 130px; height: 130px; margin-top: 5px; }
+
+        .connection-status { font-size: 0.85rem; padding: 4px 10px; border-radius: 4px; display: inline-block; font-weight: bold; margin-bottom: 10px; }
+        .status-disconnected { background: #ffebee; color: #c62828; }
+        .status-connected { background: #e8f5e9; color: #2e7d32; }
+
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <!-- Header แสดงชื่อแอป และชื่อหน่วยงาน -->
+    <div class="app-header">
+        <div>
+            <h1>🏥 ระบบซักประวัติและสื่อสารแปลภาษาไทย-พม่า (Thai-Burmese Health Translator)</h1>
+        </div>
+        <div class="sub-title">
+            <b>📍 โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านขอม อ.เมือง จ.สมุทรสาคร</b>
+        </div>
+    </div>
+
+    <div class="main-container">
+        
+        <!-- ==================== ฝั่งเจ้าหน้าที่ (PC View - ตามเอกสารแนบ 1) ==================== -->
+        <div id="officerContainer" class="panel officer-panel">
+            <h2>👨‍⚕️ หน้าจอเจ้าหน้าที่ (PC Control)</h2>
+            
+            <div id="connectionStatus" class="connection-status status-disconnected">🔴 มือถือผู้ป่วยยังไม่ได้เชื่อมต่อ</div>
+
+            <!-- กล่องแสดง QR Code ให้มือถือสแกน -->
+            <div class="qr-box">
+                <span style="font-size: 0.9rem; font-weight: bold; color: #0288d1;">📱 ให้ผู้ป่วยสแกน QR Code นี้ด้วยมือถือ:</span><br>
+                <img id="qrCodeImg" src="" alt="กำลังสร้าง QR Code...">
+            </div>
+            
+            <!-- หมวดที่ 1 -->
+            <div class="category-group">
+                <label>📋 หมวดที่ 1: ข้อมูลทั่วไป</label>
+                <select class="question-select" onchange="selectQuestion(this)">
+                    <option value="" disabled selected>-- เลือกคำถามข้อมูลทั่วไป --</option>
+                    <option value="เคยมารับบริการที่นี่หรือไม่" data-my="ဒီဆေးခန်းမှာ အရင်က ဆေး လာကုဖူးပါသလား။">1. เคยมารับบริการที่นี่หรือไม่</option>
+                    <option value="เคยมาขอบัตรสีชมพูหรือไม่" data-my="ပန်းရောင်ကတ် (အထောက်အထားကတ်) လာလုပ်ဖူးပါသလား။">2. เคยมาขอบัตรสีชมพูหรือไม่</option>
+                    <option value="ขอทราบชื่อ-นามสกุลด้วยครับ/ค่ะ" data-my="နာမည်အပြည့်အစုံ ပြောပြပါ။">3. ขอทราบชื่อ-นามสกุล</option>
+                    <option value="ที่อยู่ของคุณอยู่ที่ไหนครับ/ค่ะ" data-my="နေရပ်လိပ်စာ ဘယ်မှာလဲ။">4. ที่อยู่</option>
+                    <option value="คุณทำงานที่ไหนครับ/ค่ะ" data-my="ဘယ်မှာ အလုပ်လုပ်လဲ။">5. ทำงานที่ไหน</option>
+                    <option value="มีสิทธิประกันสังคมที่ไหน หรือเสียเงินเองครับ/ค่ะ" data-my="လူမှုဖူလုံရေး အာမခံ ဘယ်မှာရှိလဲ၊ ဒါမှမဟုတ် ကိုယ်ပိုင်ငွေနဲ့ ရှင်းတာလား။">6. มีสิทธิประกันสังคมที่ไหน หรือเสียเงินเอง</option>
+                </select>
+            </div>
+
+            <!-- หมวดที่ 2 -->
+            <div class="category-group">
+                <label>🩺 หมวดที่ 2: การมารับบริการ / อาการเจ็บป่วย</label>
+                <select class="question-select" onchange="selectQuestion(this)">
+                    <option value="" disabled selected>-- เลือกคำถามอาการเจ็บป่วย --</option>
+                    <option value="คุณมีอาการป่วยเป็นอะไรมาบ้างครับ/ค่ะ" data-my="ဘာရောဂါဖြစ်လို့ လာတာလဲ / ဘာတွေခံစားရလို့လဲ။">1. ป่วยเป็นอะไรมา</option>
+                    <option value="เป็นมานานกี่วันแล้วครับ/ค่ะ" data-my="ဘယ်နှရက်ရှိပြီလဲ။">2. เป็นมานานกี่วัน</option>
+                    <option value="เคยแพ้ยาอะไรไหมครับ/ค่ะ" data-my="ဆေးဓာတ်မတည့်တာ ရှိပါသလား။">3. เคยแพ้ยาอะไรไหม</option>
+                    <option value="มีโรคประจำตัวอะไรบ้างครับ/ค่ะ" data-my="ရောဂါအခံ (နာတာရှည်ရောဂါ) ရှိပါသလား။">4. มีโรคประจำตัวอะไร</option>
+                </select>
+            </div>
+
+            <!-- หมวดที่ 3 -->
+            <div class="category-group">
+                <label>💊 หมวดที่ 3: การรับประทานยาและคำแนะนำ</label>
+                <select class="question-select" onchange="selectQuestion(this)">
+                    <option value="" disabled selected>-- เลือกคำแนะนำการรับประทานยา --</option>
+                    <option value="ยาลดไข้ 1-2 เม็ด ทุก 4 ถึง 6 ชม. เวลาที่มีไข้หรือปวด" data-my="အဖျားကျဆေး ၁-၂ လုံး၊ အဖျားရှိ သို့မဟုတ် ကိုက်ခဲလျှင် ၄ နာရီမှ ၆ နာရီတစ်ကြိမ် သောက်ပါ။">1. ยาลดไข้ 1-2 เม็ด ทุก 4-6 ชม. (มีไข้/ปวด)</option>
+                    <option value="รับประทาน 1 เม็ด วันละ 3 ครั้ง หลังอาหาร" data-my="အစားစားပြီးနောက် ဆေး ၁ လုံး၊ တစ်နေ့ ၃ ကြိမ် သောက်ပါ။">2. รับประทาน 1 เม็ด วันละ 3 ครั้ง หลังอาหาร</option>
+                    <option value="รับประทาน 1 เม็ด วันละ 3 ครั้ง ก่อนอาหาร" data-my="အစားမစားခင် ဆေး ၁ လုံး၊ တစ်နေ့ ၃ ကြိမ် သောက်ပါ။">3. รับประทาน 1 เม็ด วันละ 3 ครั้ง ก่อนอาหาร</option>
+                    <option value="รับประทาน 1 เม็ด วันละ 2 ครั้ง เช้า-เย็น หลังอาหาร" data-my="အစားစားပြီးနောက် မနက်တစ်ကြိမ် ညတစ်ကြိမ်၊ ဆေး ၁ လုံး သောက်ပါ။">4. รับประทาน 1 เม็ด วันละ 2 ครั้ง (เช้า-เย็น)</option>
+                    <option value="รับประทานก่อนนอน 1 เม็ด" data-my="အိပ်ရာဝင်ခါနီး ဆေး ၁ လုံး သောက်ပါ။">5. รับประทานก่อนนอน 1 เม็ด</option>
+                </select>
+            </div>
+
+            <label for="customText"><b>พิมพ์ข้อความเพิ่มเติม (ถ้ามี):</b></label>
+            <textarea id="customText" placeholder="พิมพ์ข้อความภาษาไทยที่ต้องการสื่อสาร..."></textarea>
+            <button class="action-btn btn-send" onclick="sendCustomText()">ส่งข้อความนี้ ➔ ไปที่มือถือผู้ป่วย</button>
+
+            <label><b>คำตอบจากผู้ป่วย (แปลเป็นไทย):</b></label>
+            <div id="thaiTranslation" class="thai-result">คำตอบจากผู้ป่วยจะมาแสดงตรงนี้...</div>
+        </div>
+
+        <!-- ==================== ฝั่งผู้ป่วย (Mobile View - ตามเอกสารแนบ 2) ==================== -->
+        <div id="patientContainer" class="panel patient-panel" style="display: none;">
+            <h2>🇲🇲 ฝั่งผู้ป่วย (Patient Display)</h2>
+            
+            <p style="margin:5px 0;"><b>ข้อความจากเจ้าหน้าที่ (စာတို):</b></p>
+            <div id="burmeseText" class="burmese-display">မင်္ဂလာပါ (สวัสดีครับ/ค่ะ)</div>
+
+            <div id="patientStatus" class="patient-status">
+                🔊 รอฟังเสียง หรืออ่านข้อความจากเจ้าหน้าที่
+            </div>
+
+            <!-- ปุ่มไมล์มือถือผู้ป่วย ตามภาพเอกสารแนบ 2 -->
+            <button id="mobileMicBtn" class="btn-mic-mobile" onclick="toggleMobileSpeech()">
+                🎤 กดไมล์พูดภาษาพม่า (မြန်မာလိုပြောဖို့ မိုက်ခရိုဖုန်းကို နှိပ်ပါ။)
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        let peer;
+        let conn;
+        let isMobileRecording = false;
+        const urlParams = new URLSearchParams(window.location.search);
+        const hostId = urlParams.get('host');
+
+        // ตรวจสอบว่าเปิดด้วยโหมดไหน (ถ้ามี ?host ใน URL แสดงว่าเป็นมือถือผู้ป่วย)
+        if (hostId) {
+            document.getElementById('officerContainer').style.display = 'none';
+            document.getElementById('patientContainer').style.display = 'flex';
+            initPatientMode(hostId);
+        } else {
+            initOfficerMode();
+        }
+
+        // ==================== โหมดเจ้าหน้าที่ (PC Control) ====================
+        function initOfficerMode() {
+            const officerId = 'bh-off-' + Math.floor(Math.random() * 100000);
+            peer = new Peer(officerId);
+
+            peer.on('open', (id) => {
+                const currentUrl = window.location.href.split('?')[0];
+                const patientUrl = currentUrl + '?host=' + id;
+                
+                // สร้าง QR Code จาก URL สำหรับให้มือถือสแกน
+                document.getElementById('qrCodeImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(patientUrl)}`;
+            });
+
+            peer.on('connection', (incomingConn) => {
+                conn = incomingConn;
+                document.getElementById('connectionStatus').className = 'connection-status status-connected';
+                document.getElementById('connectionStatus').innerText = '🟢 มือถือผู้ป่วยเชื่อมต่อสำเร็จแล้ว';
+
+                conn.on('data', (data) => {
+                    if (data.type === 'PATIENT_SPEECH') {
+                        translateBurmeseToThai(data.text);
+                    }
+                });
+
+                conn.on('close', () => {
+                    document.getElementById('connectionStatus').className = 'connection-status status-disconnected';
+                    document.getElementById('connectionStatus').innerText = '🔴 มือถือผู้ป่วยตัดการเชื่อมต่อ';
+                });
+            });
+        }
+
+        function selectQuestion(selectElement) {
+            const thText = selectElement.value;
+            const myText = selectElement.options[selectElement.selectedIndex].getAttribute('data-my');
+            
+            if (thText) {
+                document.getElementById('customText').value = thText;
+                sendDataToPatient(myText);
+                setTimeout(() => { selectElement.selectedIndex = 0; }, 400);
+            }
+        }
+
+        async function sendCustomText() {
+            const textTH = document.getElementById('customText').value;
+            if (!textTH) return;
+
+            const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(textTH)}&langpair=th|my`);
+            const data = await res.json();
+            const myText = data.responseData.translatedText;
+
+            sendDataToPatient(myText);
+        }
+
+        function sendDataToPatient(myText) {
+            if (conn && conn.open) {
+                conn.send({ type: 'QUESTION', text: myText });
+            }
+            speakBurmese(myText);
+        }
+
+        async function translateBurmeseToThai(textMY) {
+            document.getElementById('thaiTranslation').innerText = "กำลังแปลคำตอบ: " + textMY + "...";
+            const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(textMY)}&langpair=my|th`);
+            const data = await res.json();
+            document.getElementById('thaiTranslation').innerText = data.responseData.translatedText;
+        }
+
+        function speakBurmese(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'my-MM';
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // ==================== โหมดผู้ป่วย (Mobile View) ====================
+        function initPatientMode(targetHostId) {
+            peer = new Peer();
+
+            peer.on('open', () => {
+                conn = peer.connect(targetHostId);
+                
+                conn.on('open', () => {
+                    console.log("Connected to Officer PC");
+                });
+
+                conn.on('data', (data) => {
+                    if (data.type === 'QUESTION') {
+                        document.getElementById('burmeseText').innerText = data.text;
+                        speakBurmese(data.text);
+                    }
+                });
+            });
+        }
+
+        let recognition;
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.lang = 'my-MM';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            recognition.onresult = function(event) {
+                const speechText = event.results[0][0].transcript;
+                document.getElementById('burmeseText').innerText = "ที่คุณพูด: " + speechText;
+                
+                // ส่งข้อความเสียงพม่ากลับไปหา PC ของเจ้าหน้าที่
+                if (conn && conn.open) {
+                    conn.send({ type: 'PATIENT_SPEECH', text: speechText });
+                }
+            };
+
+            recognition.onend = function() {
+                isMobileRecording = false;
+                const micBtn = document.getElementById('mobileMicBtn');
+                micBtn.classList.remove('recording');
+                micBtn.innerHTML = '🎤 กดไมล์พูดภาษาพม่า (မြန်မာလိုပြောဖို့ မိုက်ခရိုဖုန်းကို နှိပ်ပါ။)';
+                document.getElementById('patientStatus').innerText = '🔊 รอฟังเสียง หรืออ่านข้อความจากเจ้าหน้าที่';
+                document.getElementById('patientStatus').style.color = '#388e3c';
+            };
+        }
+
+        function toggleMobileSpeech() {
+            if (!recognition) {
+                alert('เบราว์เซอร์มือถือนี้ไม่รองรับการแปลงเสียงพูด แนะนำให้ใช้ Google Chrome ครับ');
+                return;
+            }
+
+            if (!isMobileRecording) {
+                recognition.start();
+                isMobileRecording = true;
+                const micBtn = document.getElementById('mobileMicBtn');
+                micBtn.classList.add('recording');
+                micBtn.innerHTML = '🔴 กำลังฟัง... พูดภาษาพม่าได้เลย (စကားပြောပါ)';
+                
+                document.getElementById('patientStatus').innerText = '🎙️ กำลังฟังเสียงของคุณอยู่...';
+                document.getElementById('patientStatus').style.color = '#d32f2f';
+            } else {
+                recognition.stop();
+            }
+        }
+    </script>
+</body>
+</html>

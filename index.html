@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบสื่อสารแปลภาษาไทย-พม่า - รพ.สต.บ้านขอม</title>
+    <title>ระบบซักประวัติและสื่อสารแปลภาษาไทย-พม่า - รพ.สต.บ้านขอม</title>
     <!-- โหลด PeerJS สำหรับเชื่อมต่อมือถือกับ PC แบบเรียลไทม์ -->
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     <style>
@@ -49,21 +49,21 @@
         .btn-mic-officer { background: #4caf50; color: white; font-size: 1.05rem; padding: 12px; border-radius: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; border: none; font-weight: bold; margin-bottom: 15px; }
         .btn-mic-officer.recording { background: #f44336; animation: pulse 1.5s infinite; }
 
-        /* กรอบแสดงข้อความฝั่งผู้ป่วย */
-        .burmese-display { font-size: 1.3rem; font-weight: bold; color: #1b5e20; background: #ffffff; padding: 15px; border-radius: 8px; border: 2px dashed #81c784; min-height: 80px; max-height: 140px; margin-top: 8px; text-align: center; display: flex; align-items: center; justify-content: center; word-break: break-word; overflow-y: auto; }
+        /* ปรับขนาดตัวอักษรฝั่งผู้ป่วยให้เล็กลงพอดีกับหน้าจอมือถือ */
+        .burmese-display { font-size: 1.3rem; font-weight: bold; color: #1b5e20; background: #ffffff; padding: 15px; border-radius: 8px; border: 2px dashed #81c784; min-height: 90px; margin-top: 10px; text-align: center; display: flex; align-items: center; justify-content: center; word-break: break-word; }
         .thai-result { font-size: 1.2rem; color: #d32f2f; font-weight: bold; background: #fff3e0; padding: 12px; border-radius: 8px; min-height: 70px; border-left: 5px solid #ff9800; }
 
-        .patient-status { text-align: center; font-size: 0.95rem; font-weight: bold; color: #388e3c; margin-top: 8px; padding: 6px; background: #e8f5e9; border-radius: 6px; }
+        .patient-status { text-align: center; font-size: 1rem; font-weight: bold; color: #388e3c; margin-top: 10px; padding: 6px; background: #e8f5e9; border-radius: 6px; }
 
-        /* ปุ่มเลือกอาการด่วนแบบหลายรายการ (Multi-select) */
-        .quick-btn-container { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
-        .quick-btn { background: #e0f2f1; color: #00695c; border: 2px solid #4db6ac; padding: 8px; border-radius: 8px; font-size: 0.85rem; font-weight: bold; cursor: pointer; text-align: center; transition: all 0.2s; }
-        .quick-btn.selected { background: #00695c; color: #ffffff; border-color: #004d40; }
+        /* ปุ่มด่วนสำหรับผู้ป่วย (Quick Response) */
+        .quick-btn-container { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+        .quick-btn { background: #e0f2f1; color: #00695c; border: 1px solid #4db6ac; padding: 10px; border-radius: 8px; font-size: 0.9rem; font-weight: bold; cursor: pointer; text-align: center; }
+        .quick-btn:hover { background: #b2dfdb; }
 
-        .btn-submit-quick { background: #2e7d32; color: white; font-size: 1rem; padding: 10px; border-radius: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; border: none; font-weight: bold; margin-top: 10px; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
-        .btn-submit-quick:hover { background: #1b5e20; }
+        .btn-audio-mobile { background: #0288d1; color: white; font-size: 1rem; padding: 12px; border-radius: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; border: none; font-weight: bold; margin-top: 10px; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
+        .btn-audio-mobile:hover { background: #0277bd; }
 
-        .btn-mic-mobile { background: #ffffff; color: #1b5e20; font-size: 1rem; padding: 10px; border-radius: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; border: 3px solid #2e7d32; font-weight: bold; margin-top: 8px; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
+        .btn-mic-mobile { background: #ffffff; color: #1b5e20; font-size: 1rem; padding: 12px; border-radius: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; border: 3px solid #2e7d32; font-weight: bold; margin-top: 10px; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
         .btn-mic-mobile.recording { background: #f44336; color: white; border-color: #d32f2f; animation: pulse 1.5s infinite; }
 
         .url-box { background: #e3f2fd; padding: 10px; border-radius: 8px; margin-bottom: 12px; border: 1px dashed #29b6f6; font-size: 0.9rem; }
@@ -81,10 +81,10 @@
 
     <div class="app-header">
         <div>
-            <h1>🏥 ระบบสื่อสารแปลภาษาไทย-พม่า (Thai-Burmese Translator)</h1>
+            <h1>🏥 ระบบซักประวัติและสื่อสารแปลภาษาไทย-พม่า (Thai-Burmese Health Translator)</h1>
         </div>
         <div class="sub-title">
-            <b>📍 รพ.สต.บ้านขอม อ.เมือง จ.สมุทรสาคร</b>
+            <b>📍 โรงพยาบาลส่งเสริมสุขภาพตำบลบ้านขอม อ.เมือง จ.สมุทรสาคร</b>
         </div>
     </div>
 
@@ -163,27 +163,26 @@
             <div id="burmeseTextMobile" class="burmese-display" lang="my">မင်္ဂလာပါ</div>
 
             <div id="patientStatusMobile" class="patient-status">
-                🔊 รอรับข้อความ หรือเลือกรายการด้านล่าง (เลือกได้มากกว่า 1)
+                🔊 รอฟังเสียง หรือเลือกคำตอบด่วนด้านล่าง
             </div>
 
-            <!-- ตัวเลือกคำตอบด่วนแบบเลือกได้หลายรายการ (Multi-select) -->
-            <p style="margin: 6px 0 2px 0; font-size: 0.8rem; font-weight: bold; color: #2e7d32;">📋 เลือกรายการ (အချက်အလက်များ ရွေးချယ်ပါ - တစ်ခုထက်ပိုရွေးနိုင်သည်):</p>
-            <div class="quick-btn-container">
-                <button type="button" class="quick-btn" onclick="toggleQuickAnswer(this, 'ปวดหัว', 'ခေါင်းကိုက်သည်')">🤕 ปวดหัว<br>(ခေါင်းကိုက်သည်)</button>
-                <button type="button" class="quick-btn" onclick="toggleQuickAnswer(this, 'ท้องเสีย', 'ဝမ်းပျက်ဝမ်းလျှောသည်')">🤢 ท้องเสีย<br>(ဝမ်းပျက်သည်)</button>
-                <button type="button" class="quick-btn" onclick="toggleQuickAnswer(this, 'ปวดหลัง', 'ကျောကိုက်သည်')">🦴 ปวดหลัง<br>(ကျောကိုက်သည်)</button>
-                <button type="button" class="quick-btn" onclick="toggleQuickAnswer(this, 'ขอใบแพทย์', 'ဆေးလက်မှတ်တောင်းသည်')">📄 ขอใบแพทย์<br>(ဆေးလက်မှတ်)</button>
-                <button type="button" class="quick-btn" onclick="toggleQuickAnswer(this, 'ทำแผล', 'ဒဏ်ရာဆေးထည့်သည်')">🩹 ทำแผล<br>(ဒဏ်ရာဆေးထည့်)</button>
-                <button type="button" class="quick-btn" onclick="toggleQuickAnswer(this, 'เป็นมา 1 วัน', 'ဖြစ်တာ ၁ ရက်ရှိပြီ')">⏱️ เป็นมา 1 วัน<br>(၁ ရက်)</button>
-                <button type="button" class="quick-btn" onclick="toggleQuickAnswer(this, 'เป็นมา 2 วัน', 'ဖြစ်တာ ၂ ရက်ရှိပြီ')">⏱️ เป็นมา 2 วัน<br>(၂ ရက်)</button>
-            </div>
-
-            <!-- ปุ่มกดยืนยันส่งข้อมูลที่เลือก -->
-            <button class="btn-submit-quick" onclick="sendSelectedQuickAnswers()">
-                📩 ส่งข้อมูลที่เลือกให้เจ้าหน้าที่ (ရွေးချယ်ပြီးသည်များကို ပို့မည်)
+            <button class="btn-audio-mobile" onclick="playPatientAudio()">
+                🔊 กดฟังเสียงพม่า (မြန်မာအသံ နားထောင်ရန် နှိပ်ပါ)
             </button>
 
-            <button id="mobileMicBtn" class="btn-mic-mobile" onclick="toggleMobileSpeech()">
+            <!-- เพิ่มตัวเลือกคำตอบด่วนภาษาพม่า (ลดการพูด) -->
+            <p style="margin: 8px 0 2px 0; font-size: 0.85rem; font-weight: bold; color: #2e7d32;">📋 เลือกตอบอาการด่วน (အမြန်အဖြေရွေးရန်):</p>
+            <div class="quick-btn-container">
+                <button class="quick-btn" onclick="sendQuickAnswer('ปวดหัว', 'ခေါင်းကိုက်သည်')">🤕 ปวดหัว<br>(ခေါင်းကိုက်သည်)</button>
+                <button class="quick-btn" onclick="sendQuickAnswer('ท้องเสีย', 'ဝမ်းပျက်ဝမ်းလျှောသည်')">🤢 ท้องเสีย<br>(ဝမ်းပျက်သည်)</button>
+                <button class="quick-btn" onclick="sendQuickAnswer('ปวดหลัง', 'ကျောကိုက်သည်')">🦴 ปวดหลัง<br>(ကျောကိုက်သည်)</button>
+                <button class="quick-btn" onclick="sendQuickAnswer('ขอใบแพทย์', 'ဆေးလက်မှတ်တောင်းသည်')">📄 ขอใบแพทย์<br>(ဆေးလက်မှတ်)</button>
+                <button class="quick-btn" onclick="sendQuickAnswer('ทำแผล', 'ဒဏ်ရာဆေးထည့်သည်')">🩹 ทำแผล<br>(ဒဏ်ရာဆေးထည့်)</button>
+                <button class="quick-btn" onclick="sendQuickAnswer('เป็นมา 1 วัน', 'ဖြစ်တာ ၁ ရက်ရှိပြီ')">⏱️ เป็นมา 1 วัน<br>(၁ ရက်)</button>
+                <button class="quick-btn" onclick="sendQuickAnswer('เป็นมา 2 วัน', 'ဖြစ်တာ ၂ ရက်ရှိပြီ')">⏱️ เป็นมา 2 วัน<br>(၂ ရက်)</button>
+            </div>
+
+            <button id="mobileMicBtn" class="btn-mic-mobile" onclick="toggleMobileSpeech()" style="margin-top: 12px;">
                 🎤 กดไมล์พูดภาษาพม่า (မြန်မာလိုပြောဖို့ နှိပ်ပါ)
             </button>
         </div>
@@ -194,7 +193,7 @@
         let peer;
         let conn;
         const FIXED_OFFICER_ID = 'bh-bankhom-officer-main';
-        let selectedQuickAnswers = []; // เก็บรายการที่ผู้ป่วยเลือกหลายรายการ
+        let latestBurmeseText = "မင်္ဂလာပါ";
 
         const urlParams = new URLSearchParams(window.location.search);
         const isPatientMode = urlParams.get('mode') === 'patient';
@@ -227,7 +226,7 @@
 
                 conn.on('data', (data) => {
                     if (data.type === 'PATIENT_SPEECH') {
-                        translateBurmeseToThai(data.text, 'thaiTranslation');
+                        document.getElementById('thaiTranslation').innerText = data.text;
                     }
                 });
 
@@ -277,10 +276,11 @@
         }
 
         function sendDataToPatient(myText) {
+            latestBurmeseText = myText;
             if (conn && conn.open) {
                 conn.send({ type: 'QUESTION', text: myText });
             }
-            speakBurmese(myText); // ฝั่งเจ้าหน้าที่ยังคงออกเสียงตามเดิม
+            speakBurmese(myText);
         }
 
         let officerRecognition;
@@ -333,51 +333,37 @@
 
                 conn.on('data', (data) => {
                     if (data.type === 'QUESTION') {
-                        // แสดงข้อความบนมือถืออย่างเดียว (ไม่มีการสั่งเล่นเสียงพม่าบนมือถือเพื่อตัดปัญหาอ่านเป็นภาษาอังกฤษ)
+                        latestBurmeseText = data.text;
                         document.getElementById('burmeseTextMobile').innerText = data.text;
-                        document.getElementById('patientStatusMobile').innerText = '🔔 มีข้อความใหม่จากเจ้าหน้าที่';
+                        document.getElementById('patientStatusMobile').innerText = '🔔 มีข้อความใหม่! กดปุ่มฟังเสียงด้านล่าง';
                         document.getElementById('patientStatusMobile').style.color = '#d32f2f';
+                        speakBurmese(data.text);
                     } else if (data.type === 'CLEAR_SCREEN') {
+                        latestBurmeseText = "မင်္ဂလာပါ";
                         document.getElementById('burmeseTextMobile').innerText = 'မင်္ဂလာပါ';
-                        document.getElementById('patientStatusMobile').innerText = '🔊 รอรับข้อความ หรือเลือกรายการด้านล่าง';
+                        document.getElementById('patientStatusMobile').innerText = '🔊 รอฟังเสียง หรืออ่านข้อความจากเจ้าหน้าที่';
                         document.getElementById('patientStatusMobile').style.color = '#388e3c';
-                        selectedQuickAnswers = [];
-                        document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('selected'));
                     }
                 });
             });
         }
 
-        // ฟังก์ชันเลือกรายการแบบหลายรายการ (Toggle Selection)
-        function toggleQuickAnswer(btn, thaiText, burmeseText) {
-            const index = selectedQuickAnswers.findIndex(item => item.burmese === burmeseText);
-            if (index > -1) {
-                // ถ้าเลือกอยู่แล้ว ให้เอาออก
-                selectedQuickAnswers.splice(index, 1);
-                btn.classList.remove('selected');
-            } else {
-                // ถ้ายังไม่ได้เลือก ให้เพิ่มเข้าไป
-                selectedQuickAnswers.push({ thai: thaiText, burmese: burmeseText });
-                btn.classList.add('selected');
-            }
-        }
-
-        // ฟังก์ชันกดยืนยันส่งข้อมูลที่เลือกทั้งหมดไปให้เจ้าหน้าที่
-        function sendSelectedQuickAnswers() {
-            if (selectedQuickAnswers.length === 0) {
-                alert('กรุณาเลือกอย่างน้อย 1 รายการครับ / ကျေးဇူးပြု၍ အနည်းဆုံး တစ်ခုရွေးပါ');
-                return;
-            }
-
-            const combinedBurmese = selectedQuickAnswers.map(item => item.burmese).join('၊ ');
-            const combinedThai = selectedQuickAnswers.map(item => item.thai).join(', ');
-
-            document.getElementById('burmeseTextMobile').innerText = combinedBurmese;
-            document.getElementById('patientStatusMobile').innerText = '✅ ส่งข้อมูลแล้ว: ' + combinedThai;
+        // ฟังก์ชันส่งคำตอบด่วนจากปุ่มเลือก
+        function sendQuickAnswer(thaiText, burmeseText) {
+            document.getElementById('burmeseTextMobile').innerText = burmeseText;
+            document.getElementById('patientStatusMobile').innerText = '✅ ส่งคำตอบแล้ว: ' + thaiText;
             document.getElementById('patientStatusMobile').style.color = '#2e7d32';
 
             if (conn && conn.open) {
-                conn.send({ type: 'PATIENT_SPEECH', text: combinedBurmese });
+                conn.send({ type: 'PATIENT_SPEECH', text: thaiText });
+            }
+        }
+
+        function playPatientAudio() {
+            if (latestBurmeseText) {
+                speakBurmese(latestBurmeseText);
+                document.getElementById('patientStatusMobile').innerText = '🔊 กำลังเล่นเสียง...';
+                document.getElementById('patientStatusMobile').style.color = '#388e3c';
             }
         }
 
@@ -395,6 +381,7 @@
                 const speechText = event.results[0][0].transcript;
                 document.getElementById('burmeseTextMobile').innerText = "ที่คุณพูด: " + speechText;
                 
+                // แปลงเสียงพูดพม่าเป็นไทยคร่าวๆ หรือส่งข้อความพม่ากลับไปให้ จนท.แปล
                 if (conn && conn.open) {
                     conn.send({ type: 'PATIENT_SPEECH', text: speechText });
                 }
@@ -433,13 +420,13 @@
         }
 
         async function translateBurmeseToThai(textMY, targetElementId) {
-            document.getElementById(targetElementId).innerText = "กำลังแปลคำตอบเป็นไทย: " + textMY + "...";
+            document.getElementById(targetElementId).innerText = "กำลังแปลคำตอบ: " + textMY + "...";
             const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(textMY)}&langpair=my|th`);
             const data = await res.json();
             document.getElementById(targetElementId).innerText = data.responseData.translatedText;
         }
 
-        // ระบบเสียงพม่าฝั่งเจ้าหน้าที่ (คงเดิม)
+        // ระบบเสียงพม่าแบบผสมผสาน (รองรับทั้งระบบ TTS ในตัว และ Audio Fallback ป้องกันไม่อ่าน)
         function speakBurmese(text) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
@@ -447,12 +434,14 @@
                 utterance.lang = 'my-MM';
                 utterance.rate = 0.9;
                 
+                // ดึงเสียงพม่าถ้ามีในเครื่อง
                 const voices = window.speechSynthesis.getVoices();
                 const burmeseVoice = voices.find(v => v.lang.includes('my') || v.lang.includes('MM'));
                 if (burmeseVoice) {
                     utterance.voice = burmeseVoice;
                 }
 
+                // ถ้ามือถือไม่อ่านหรือเกิดข้อผิดพลาด ให้ใช้เสียงสำรองจาก Google Translate Audio
                 utterance.onerror = function() {
                     playAudioFallback(text);
                 };

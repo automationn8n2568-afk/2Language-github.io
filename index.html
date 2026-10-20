@@ -65,39 +65,64 @@
         .status-disconnected { background: #ffebee; color: #c62828; }
         .status-connected { background: #e8f5e9; color: #2e7d32; }
 
-        /* --- Style สำหรับการปรับปรุงฝั่งผู้ป่วยตาม เอกสารแนบ 2 & 4 --- */
+        /* --- Style ปรับปรุงฝั่งผู้ป่วย: แก้ไขช่อง Dropdown ให้แคบลงพอดี ไม่ล้นหน้าจอ --- */
         .card-patient {
             background: #ffffff;
             border-radius: 20px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            padding: 20px;
+            padding: 16px;
             width: 100%;
             max-width: 440px;
             border: 1px solid #e2e8f0;
         }
-        .patient-title { color: #4a5568; font-weight: 700; text-align: center; margin-bottom: 15px; font-size: 1.4rem; }
+        .patient-title { color: #4a5568; font-weight: 700; text-align: center; margin-bottom: 12px; font-size: 1.3rem; }
         
-        .lang-container { display: flex; gap: 6px; margin-bottom: 15px; }
-        .btn-lang { flex: 1; border: none; border-radius: 10px; padding: 8px 4px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .lang-container { display: flex; gap: 6px; margin-bottom: 12px; }
+        .btn-lang { flex: 1; border: none; border-radius: 10px; padding: 6px 4px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
         .btn-th { background-color: #e3f2fd; color: #1e88e5; }
         .btn-my { background-color: #fff3e0; color: #fb8c00; }
         .btn-en { background-color: #e8f5e9; color: #43a047; }
         .btn-lang.active { transform: scale(1.03); box-shadow: 0 2px 8px rgba(0,0,0,0.12); filter: brightness(0.95); }
 
-        .form-label-custom { color: #475569; font-weight: 600; margin-bottom: 6px; font-size: 0.9rem; display: block; }
+        .form-label-custom { color: #475569; font-weight: 600; margin-bottom: 4px; font-size: 0.85rem; display: block; }
         
-        .input-group-custom { display: flex; margin-bottom: 8px; }
-        .input-group-custom select { flex: 1; border: 2px solid #cbd5e1; border-top-left-radius: 12px; border-bottom-left-radius: 12px; border-right: none; padding: 8px 12px; font-size: 0.9rem; outline: none; background: #f8fafc; }
-        .input-group-custom .btn-add { background-color: #22c55e; color: white; border: none; border-top-right-radius: 12px; border-bottom-right-radius: 12px; padding: 0 18px; font-weight: bold; cursor: pointer; }
+        /* แก้ไขสัดส่วน Input Group ให้กระชับ ไม่ดันล้นจอ */
+        .input-group-custom { display: flex; width: 100%; margin-bottom: 8px; }
+        .input-group-custom select { 
+            flex: 1; 
+            width: 0; 
+            min-width: 0; 
+            border: 2px solid #cbd5e1; 
+            border-top-left-radius: 10px; 
+            border-bottom-left-radius: 10px; 
+            border-right: none; 
+            padding: 8px 10px; 
+            font-size: 0.85rem; 
+            outline: none; 
+            background: #f8fafc; 
+            text-overflow: ellipsis;
+        }
+        .input-group-custom .btn-add { 
+            background-color: #22c55e; 
+            color: white; 
+            border: none; 
+            border-top-right-radius: 10px; 
+            border-bottom-right-radius: 10px; 
+            padding: 0 16px; 
+            font-weight: bold; 
+            font-size: 0.85rem; 
+            cursor: pointer; 
+            white-space: nowrap; 
+        }
         .input-group-custom .btn-add:hover { background-color: #16a34a; }
 
-        .selected-box { border: 2px solid #e2e8f0; border-radius: 12px; padding: 8px 12px; background-color: #f8fafc; min-height: 52px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 12px; }
-        .tag-item { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; border-radius: 8px; padding: 4px 10px; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; }
-        .tag-remove { background: none; border: none; color: #15803d; margin-left: 6px; font-size: 16px; cursor: pointer; font-weight: bold; }
+        .selected-box { border: 2px solid #e2e8f0; border-radius: 10px; padding: 6px 10px; background-color: #f8fafc; min-height: 45px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 10px; }
+        .tag-item { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; border-radius: 6px; padding: 3px 8px; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; }
+        .tag-remove { background: none; border: none; color: #15803d; margin-left: 5px; font-size: 14px; cursor: pointer; font-weight: bold; }
 
-        .form-select-custom { width: 100%; border: 2px solid #cbd5e1; border-radius: 12px; padding: 8px 12px; background-color: #f8fafc; font-size: 0.9rem; margin-bottom: 12px; outline: none; }
+        .form-select-custom { width: 100%; border: 2px solid #cbd5e1; border-radius: 10px; padding: 8px 10px; background-color: #f8fafc; font-size: 0.85rem; margin-bottom: 10px; outline: none; }
         
-        .btn-submit-patient { background: linear-gradient(135deg, #a7f3d0 0%, #6ee7b7 100%); border: none; color: #065f46; font-weight: bold; padding: 12px; border-radius: 12px; font-size: 1rem; width: 100%; cursor: pointer; box-shadow: 0 3px 10px rgba(110, 231, 183, 0.4); margin-top: 5px; }
+        .btn-submit-patient { background: linear-gradient(135deg, #a7f3d0 0%, #6ee7b7 100%); border: none; color: #065f46; font-weight: bold; padding: 10px; border-radius: 10px; font-size: 0.95rem; width: 100%; cursor: pointer; box-shadow: 0 3px 10px rgba(110, 231, 183, 0.4); margin-top: 4px; }
         .btn-submit-patient:hover { background: linear-gradient(135deg, #6ee7b7 0%, #34d399 100%); }
 
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
@@ -181,7 +206,7 @@
             <div id="thaiTranslation" class="thai-result">คำตอบจากผู้ป่วยจะมาแสดงตรงนี้...</div>
         </div>
 
-        <!-- 2. หน้าจอมือถือผู้ป่วย (ปรับปรุงตาม เอกสารแนบ 2 และ ตัวอย่าง code แนบ 4) -->
+        <!-- 2. หน้าจอมือถือผู้ป่วย (ปรับขนาด Dropdown กระชับพอดีจอ) -->
         <div id="patientMobilePanel" class="panel patient-mobile-panel">
             <div class="card-patient">
                 <h3 id="txt-title" class="patient-title">လူနာမှတ်တမ်းစနစ်</h3>
@@ -194,8 +219,8 @@
                 </div>
 
                 <!-- ข้อความ/คำถามจากเจ้าหน้าที่ -->
-                <div style="margin-bottom: 10px;">
-                    <span id="txt-officer-msg-label" style="font-size:0.8rem; font-weight:bold; color:#0288d1;">ข้อความจากเจ้าหน้าที่:</span>
+                <div style="margin-bottom: 8px;">
+                    <span id="txt-officer-msg-label" style="font-size:0.75rem; font-weight:bold; color:#0288d1;">ข้อความจากเจ้าหน้าที่:</span>
                     <div id="burmeseTextMobile" class="burmese-display" lang="my">မင်္ဂလာပါ</div>
                 </div>
 
@@ -203,10 +228,10 @@
                     🔊 เลือกกรอกข้อมูล หรือพูดผ่านไมค์ด้านล่าง
                 </div>
 
-                <!-- ฟอร์มเลือกอาการ ปรับตาม UI แนบ 2 และ Code แนบ 4 -->
+                <!-- ฟอร์มเลือกอาการ -->
                 <form id="patientForm" onsubmit="event.preventDefault(); submitPatientData();">
                     
-                    <div style="margin-bottom: 8px;">
+                    <div style="margin-bottom: 6px;">
                         <label id="txt-sym" class="form-label-custom">อาการสำคัญ (เลือกได้มากกว่า 1 อาการ)</label>
                         <div class="input-group-custom">
                             <select id="symptom-select">
@@ -266,18 +291,18 @@
                             <button type="button" id="btn-add" class="btn-add" onclick="addSymptom()">ထည့်မည်</button>
                         </div>
 
-                        <label id="txt-selected-label" style="font-size: 0.8rem; font-weight: bold; color: #64748b;">แสดงรายการที่เลือก:</label>
+                        <label id="txt-selected-label" style="font-size: 0.75rem; font-weight: bold; color: #64748b;">แสดงรายการที่เลือก:</label>
                         <div id="selected-symptoms-container" class="selected-box">
-                            <span style="color: #22c55e; font-weight: 500; font-size: 0.85rem;" id="txt-no-sym">ရွေးချယ်ထားသောစာရင်းကိုပြပါ</span>
+                            <span style="color: #22c55e; font-weight: 500; font-size: 0.8rem;" id="txt-no-sym">ရွေးချယ်ထားသောစာရင်းကိုပြပါ</span>
                         </div>
                     </div>
 
-                    <div style="margin-bottom: 8px;">
+                    <div style="margin-bottom: 6px;">
                         <label id="txt-days" class="form-label-custom">ป่วยมากี่วัน</label>
                         <input type="number" id="patientDays" class="form-select-custom" placeholder="0" min="0" value="0">
                     </div>
 
-                    <div style="margin-bottom: 8px;">
+                    <div style="margin-bottom: 6px;">
                         <label id="txt-cert" class="form-label-custom">ใบรับรองแพทย์</label>
                         <select id="patientCert" class="form-select-custom">
                             <option value="ใช้" id="opt-yes">ယူမည်</option>
@@ -293,7 +318,7 @@
                     🎤 กดไมล์พูดภาษาพม่า (မြန်မာလိုပြောဖို့ နှိပ်ပါ)
                 </button>
 
-                <div class="text-center mt-3" style="text-align: center; color: #94a3b8; font-size: 12px; margin-top: 10px;">
+                <div class="text-center mt-2" style="text-align: center; color: #94a3b8; font-size: 11px; margin-top: 6px;">
                     @ รพ.สต.บ้านขอม
                 </div>
             </div>
@@ -307,7 +332,6 @@
         const FIXED_OFFICER_ID = 'bh-bankhom-officer-main';
         let latestBurmeseText = "မင်္ဂလာပါ";
 
-        // --- ชุดข้อมูลภาษาตามเอกสารแนบ 4 ---
         const langData = {
             th: {
                 title: "ระบบบันทึกข้อมูลผู้ป่วย", sym: "อาการสำคัญ (เลือกได้มากกว่า 1 อาการ)", days: "ป่วยมากี่วัน", cert: "ใบรับรองแพทย์",
@@ -380,7 +404,7 @@
             }
         };
 
-        let currentLang = 'my'; // ค่าเริ่มต้นภาษาพม่า
+        let currentLang = 'my';
         let selectedSymptoms = [];
 
         const urlParams = new URLSearchParams(window.location.search);
@@ -390,7 +414,7 @@
             document.getElementById('officerPanel').style.display = 'none';
             document.getElementById('patientMobilePanel').style.display = 'flex';
             initPatientMode();
-            setLang('my'); // ตั้งเริ่มต้นฝั่งผู้ป่วยเป็นภาษาพม่า
+            setLang('my');
         } else {
             initOfficerMode();
         }
@@ -415,7 +439,6 @@
 
                 conn.on('data', (data) => {
                     if (data.type === 'PATIENT_SPEECH') {
-                        // ปรับปรุง: แปลภาษาพม่าเป็นไทยก่อนแสดงผลถ้าข้อมูลที่ส่งมายังคงเป็นพม่า
                         if (/[\u1000-\u109F]/.test(data.text)) {
                             translateBurmeseToThai(data.text, 'thaiTranslation');
                         } else {
@@ -545,7 +568,6 @@
             });
         }
 
-        // --- ระบบสลับภาษาและการทำงานของ Multi-select ฝั่งผู้ป่วย ---
         function setLang(lang) {
             currentLang = lang;
             const d = langData[lang];
@@ -563,14 +585,12 @@
             document.getElementById('txt-officer-msg-label').innerText = d.officerMsgLabel;
             document.getElementById('txt-selected-label').innerText = d.selectedLabel;
 
-            // อัปเดตข้อความรายการเลือกอาการ
             const options = document.querySelectorAll('#symptom-select option[data-key]');
             options.forEach(opt => {
                 const key = opt.getAttribute('data-key');
                 if (d[key]) opt.innerText = d[key];
             });
 
-            // อัปเดตปุ่มภาษา active
             document.querySelectorAll('.btn-lang').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`btn-lang-${lang}`).classList.add('active');
 
@@ -579,7 +599,7 @@
 
         function addSymptom() {
             const select = document.getElementById('symptom-select');
-            const valTH = select.value; // ดึงค่าภาษาไทยเพื่อนำไปส่งเจ้าหน้าที่
+            const valTH = select.value;
             
             if (!valTH) return;
 
@@ -603,7 +623,7 @@
             const container = document.getElementById('selected-symptoms-container');
             
             if (selectedSymptoms.length === 0) {
-                container.innerHTML = `<span style="color: #22c55e; font-weight: 500; font-size: 0.85rem;" id="txt-no-sym">${langData[currentLang].noSym}</span>`;
+                container.innerHTML = `<span style="color: #22c55e; font-weight: 500; font-size: 0.8rem;" id="txt-no-sym">${langData[currentLang].noSym}</span>`;
                 return;
             }
 
@@ -620,7 +640,6 @@
             });
         }
 
-        // --- ส่งข้อมูลสรุปจากผู้ป่วยกลับไปให้เจ้าหน้าที่เป็นภาษาไทย[cite: 3] ---
         function submitPatientData() {
             if (selectedSymptoms.length === 0) {
                 alert(langData[currentLang].symAlert);
@@ -631,7 +650,6 @@
             const days = document.getElementById('patientDays').value || '0';
             const cert = document.getElementById('patientCert').value;
 
-            // สร้างข้อความภาษาไทยส่งให้เจ้าหน้าที่[cite: 3]
             const summaryTH = `อาการ: ${symptomsTH} | เป็นมา: ${days} วัน | ใบรับรองแพทย์: ${cert}`;
 
             document.getElementById('patientStatusMobile').innerText = '✅ ส่งข้อมูลเรียบร้อย';
@@ -656,7 +674,6 @@
                 const speechText = event.results[0][0].transcript;
                 document.getElementById('burmeseTextMobile').innerText = "ที่คุณพูด: " + speechText;
                 
-                // แปลเสียงพูดภาษาพม่าเป็นภาษาไทยก่อนส่งให้เจ้าหน้าที่[cite: 3]
                 fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(speechText)}&langpair=my|th`)
                     .then(res => res.json())
                     .then(data => {

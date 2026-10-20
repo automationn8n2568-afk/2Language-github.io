@@ -49,7 +49,7 @@
         .btn-mic-officer { background: #4caf50; color: white; font-size: 1.05rem; padding: 12px; border-radius: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; border: none; font-weight: bold; margin-bottom: 15px; }
         .btn-mic-officer.recording { background: #f44336; animation: pulse 1.5s infinite; }
 
-        /* ขนาดตัวอักษรฝั่งผู้ป่วยพอดี ไม่ล้นจอ */
+        /* ปรับขนาดตัวอักษรฝั่งผู้ป่วยให้เล็กลงพอดีกับหน้าจอมือถือ */
         .burmese-display { font-size: 1.3rem; font-weight: bold; color: #1b5e20; background: #ffffff; padding: 15px; border-radius: 8px; border: 2px dashed #81c784; min-height: 90px; margin-top: 10px; text-align: center; display: flex; align-items: center; justify-content: center; word-break: break-word; }
         .thai-result { font-size: 1.2rem; color: #d32f2f; font-weight: bold; background: #fff3e0; padding: 12px; border-radius: 8px; min-height: 70px; border-left: 5px solid #ff9800; }
 
@@ -170,7 +170,7 @@
                 🔊 กดฟังเสียงพม่า (မြန်မာအသံ နားထောင်ရန် နှိပ်ပါ)
             </button>
 
-            <!-- ตัวเลือกคำตอบด่วนภาษาพม่า -->
+            <!-- เพิ่มตัวเลือกคำตอบด่วนภาษาพม่า (ลดการพูด) -->
             <p style="margin: 8px 0 2px 0; font-size: 0.85rem; font-weight: bold; color: #2e7d32;">📋 เลือกตอบอาการด่วน (အမြန်အဖြေရွေးရန်):</p>
             <div class="quick-btn-container">
                 <button class="quick-btn" onclick="sendQuickAnswer('ปวดหัว', 'ခေါင်းကိုက်သည်')">🤕 ปวดหัว<br>(ခေါင်းကိုက်သည်)</button>
@@ -226,8 +226,7 @@
 
                 conn.on('data', (data) => {
                     if (data.type === 'PATIENT_SPEECH') {
-                        // เมื่อรับข้อความพม่าจากผู้ป่วย แปลเป็นไทยแล้วแสดงที่หน้าจอเจ้าหน้าที่
-                        translateBurmeseToThai(data.text, 'thaiTranslation');
+                        document.getElementById('thaiTranslation').innerText = data.text;
                     }
                 });
 
@@ -349,14 +348,14 @@
             });
         }
 
-        // ส่งคำตอบด่วน (ส่งข้อความภาษาพม่าให้ จนท. แล้ว จนท. จะแปลเป็นไทยอัตโนมัติ)
+        // ฟังก์ชันส่งคำตอบด่วนจากปุ่มเลือก
         function sendQuickAnswer(thaiText, burmeseText) {
             document.getElementById('burmeseTextMobile').innerText = burmeseText;
             document.getElementById('patientStatusMobile').innerText = '✅ ส่งคำตอบแล้ว: ' + thaiText;
             document.getElementById('patientStatusMobile').style.color = '#2e7d32';
 
             if (conn && conn.open) {
-                conn.send({ type: 'PATIENT_SPEECH', text: burmeseText });
+                conn.send({ type: 'PATIENT_SPEECH', text: thaiText });
             }
         }
 
@@ -382,6 +381,7 @@
                 const speechText = event.results[0][0].transcript;
                 document.getElementById('burmeseTextMobile').innerText = "ที่คุณพูด: " + speechText;
                 
+                // แปลงเสียงพูดพม่าเป็นไทยคร่าวๆ หรือส่งข้อความพม่ากลับไปให้ จนท.แปล
                 if (conn && conn.open) {
                     conn.send({ type: 'PATIENT_SPEECH', text: speechText });
                 }
@@ -420,23 +420,50 @@
         }
 
         async function translateBurmeseToThai(textMY, targetElementId) {
-            document.getElementById(targetElementId).innerText = "กำลังแปลคำตอบเป็นไทย: " + textMY + "...";
+            document.getElementById(targetElementId).innerText = "กำลังแปลคำตอบ: " + textMY + "...";
             const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(textMY)}&langpair=my|th`);
             const data = await res.json();
             document.getElementById(targetElementId).innerText = data.responseData.translatedText;
         }
 
-        // ระบบเสียงพูดภาษาพม่าผ่าน Google Translate Audio เพื่อป้องกันปัญหาอ่านเป็นตัวอักษรภาษาอังกฤษ
+        // ระบบเสียงพม่าแบบผสมผสาน (รองรับทั้งระบบ TTS ในตัว และ Audio Fallback ป้องกันไม่อ่าน)
         function speakBurmese(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'my-MM';
+                utterance.rate = 0.9;
+                
+                // ดึงเสียงพม่าถ้ามีในเครื่อง
+                const voices = window.speechSynthesis.getVoices();
+                const burmeseVoice = voices.find(v => v.lang.includes('my') || v.lang.includes('MM'));
+                if (burmeseVoice) {
+                    utterance.voice = burmeseVoice;
+                }
+
+                // ถ้ามือถือไม่อ่านหรือเกิดข้อผิดพลาด ให้ใช้เสียงสำรองจาก Google Translate Audio
+                utterance.onerror = function() {
+                    playAudioFallback(text);
+                };
+
+                window.speechSynthesis.speak(utterance);
+            } else {
+                playAudioFallback(text);
+            }
+        }
+
+        function playAudioFallback(text) {
             try {
                 const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=my&client=tw-ob`;
                 const audio = new Audio(audioUrl);
-                audio.play().catch(error => {
-                    console.log("Audio autoplay blocked or error:", error);
-                });
-            } catch (err) {
-                console.log("Audio play error", err);
+                audio.play().catch(e => console.log("Audio play blocked"));
+            } catch(err) {
+                console.log("Fallback audio error", err);
             }
+        }
+
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
         }
     </script>
 </body>

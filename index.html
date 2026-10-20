@@ -28,9 +28,9 @@
 
         .panel { flex: 1; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow-y: auto; }
         .officer-panel { border-top: 6px solid #0288d1; flex: 1; }
-        .patient-mobile-panel { border-top: 6px solid #2e7d32; background-color: #f9fbe7; flex: 1; display: none; }
+        .patient-mobile-panel { border-top: 6px solid #2e7d32; background-color: #ffffff; flex: 1; display: none; align-items: center; justify-content: flex-start; }
 
-        h2 { margin-top: 0; color: #333; font-size: 1.2rem; border-bottom: 2px solid #ddd; padding-bottom: 8px; }
+        h2 { margin-top: 0; color: #333; font-size: 1.2rem; border-bottom: 2px solid #ddd; padding-bottom: 8px; width: 100%; }
         
         .category-group { margin-bottom: 10px; }
         .category-group label { display: block; font-size: 0.85rem; color: #0288d1; margin-bottom: 3px; font-weight: bold; }
@@ -49,16 +49,10 @@
         .btn-mic-officer { background: #4caf50; color: white; font-size: 1.05rem; padding: 12px; border-radius: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; border: none; font-weight: bold; margin-bottom: 15px; }
         .btn-mic-officer.recording { background: #f44336; animation: pulse 1.5s infinite; }
 
-        /* ปรับขนาดตัวอักษรฝั่งผู้ป่วยให้เล็กลงพอดีกับหน้าจอมือถือ */
-        .burmese-display { font-size: 1.2rem; font-weight: bold; color: #1b5e20; background: #ffffff; padding: 12px; border-radius: 8px; border: 2px dashed #81c784; min-height: 70px; margin-top: 5px; text-align: center; display: flex; align-items: center; justify-content: center; word-break: break-word; }
+        .burmese-display { font-size: 1.1rem; font-weight: bold; color: #1b5e20; background: #ffffff; padding: 10px; border-radius: 8px; border: 2px dashed #81c784; min-height: 50px; margin-top: 5px; text-align: center; display: flex; align-items: center; justify-content: center; word-break: break-word; width: 100%; }
         .thai-result { font-size: 1.2rem; color: #d32f2f; font-weight: bold; background: #fff3e0; padding: 12px; border-radius: 8px; min-height: 70px; border-left: 5px solid #ff9800; }
 
-        .patient-status { text-align: center; font-size: 0.9rem; font-weight: bold; color: #388e3c; margin: 6px 0; padding: 4px; background: #e8f5e9; border-radius: 6px; }
-
-        /* ปุ่มด่วนสำหรับผู้ป่วย (Quick Response) */
-        .quick-btn-container { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 5px; }
-        .quick-btn { background: #e0f2f1; color: #00695c; border: 1px solid #4db6ac; padding: 10px; border-radius: 8px; font-size: 0.9rem; font-weight: bold; cursor: pointer; text-align: center; }
-        .quick-btn:hover { background: #b2dfdb; }
+        .patient-status { text-align: center; font-size: 0.85rem; font-weight: bold; color: #388e3c; margin: 6px 0; padding: 4px; background: #e8f5e9; border-radius: 6px; width: 100%; }
 
         .btn-mic-mobile { background: #ffffff; color: #1b5e20; font-size: 1rem; padding: 12px; border-radius: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; border: 3px solid #2e7d32; font-weight: bold; margin-top: 10px; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
         .btn-mic-mobile.recording { background: #f44336; color: white; border-color: #d32f2f; animation: pulse 1.5s infinite; }
@@ -70,6 +64,41 @@
         .connection-status { font-size: 0.85rem; padding: 4px 10px; border-radius: 4px; display: inline-block; font-weight: bold; margin-bottom: 8px; }
         .status-disconnected { background: #ffebee; color: #c62828; }
         .status-connected { background: #e8f5e9; color: #2e7d32; }
+
+        /* --- Style สำหรับการปรับปรุงฝั่งผู้ป่วยตาม เอกสารแนบ 2 & 4 --- */
+        .card-patient {
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            width: 100%;
+            max-width: 440px;
+            border: 1px solid #e2e8f0;
+        }
+        .patient-title { color: #4a5568; font-weight: 700; text-align: center; margin-bottom: 15px; font-size: 1.4rem; }
+        
+        .lang-container { display: flex; gap: 6px; margin-bottom: 15px; }
+        .btn-lang { flex: 1; border: none; border-radius: 10px; padding: 8px 4px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .btn-th { background-color: #e3f2fd; color: #1e88e5; }
+        .btn-my { background-color: #fff3e0; color: #fb8c00; }
+        .btn-en { background-color: #e8f5e9; color: #43a047; }
+        .btn-lang.active { transform: scale(1.03); box-shadow: 0 2px 8px rgba(0,0,0,0.12); filter: brightness(0.95); }
+
+        .form-label-custom { color: #475569; font-weight: 600; margin-bottom: 6px; font-size: 0.9rem; display: block; }
+        
+        .input-group-custom { display: flex; margin-bottom: 8px; }
+        .input-group-custom select { flex: 1; border: 2px solid #cbd5e1; border-top-left-radius: 12px; border-bottom-left-radius: 12px; border-right: none; padding: 8px 12px; font-size: 0.9rem; outline: none; background: #f8fafc; }
+        .input-group-custom .btn-add { background-color: #22c55e; color: white; border: none; border-top-right-radius: 12px; border-bottom-right-radius: 12px; padding: 0 18px; font-weight: bold; cursor: pointer; }
+        .input-group-custom .btn-add:hover { background-color: #16a34a; }
+
+        .selected-box { border: 2px solid #e2e8f0; border-radius: 12px; padding: 8px 12px; background-color: #f8fafc; min-height: 52px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 12px; }
+        .tag-item { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; border-radius: 8px; padding: 4px 10px; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; }
+        .tag-remove { background: none; border: none; color: #15803d; margin-left: 6px; font-size: 16px; cursor: pointer; font-weight: bold; }
+
+        .form-select-custom { width: 100%; border: 2px solid #cbd5e1; border-radius: 12px; padding: 8px 12px; background-color: #f8fafc; font-size: 0.9rem; margin-bottom: 12px; outline: none; }
+        
+        .btn-submit-patient { background: linear-gradient(135deg, #a7f3d0 0%, #6ee7b7 100%); border: none; color: #065f46; font-weight: bold; padding: 12px; border-radius: 12px; font-size: 1rem; width: 100%; cursor: pointer; box-shadow: 0 3px 10px rgba(110, 231, 183, 0.4); margin-top: 5px; }
+        .btn-submit-patient:hover { background: linear-gradient(135deg, #6ee7b7 0%, #34d399 100%); }
 
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
     </style>
@@ -152,39 +181,122 @@
             <div id="thaiTranslation" class="thai-result">คำตอบจากผู้ป่วยจะมาแสดงตรงนี้...</div>
         </div>
 
-        <!-- 2. หน้าจอมือถือผู้ป่วย (ปรับใหม่ตามแนบ 2) -->
+        <!-- 2. หน้าจอมือถือผู้ป่วย (ปรับปรุงตาม เอกสารแนบ 2 และ ตัวอย่าง code แนบ 4) -->
         <div id="patientMobilePanel" class="panel patient-mobile-panel">
-            <h2>🇲🇲 ฝั่งผู้ป่วย (Patient Display)</h2>
-            
-            <!-- 1. ปุ่มตอบด่วน -->
-            <p style="margin: 2px 0; font-size: 0.85rem; font-weight: bold; color: #2e7d32;">📋 เลือกตอบอาการด่วน (အမြန်အဖြေရွေးရန်):</p>
-            <div class="quick-btn-container">
-                <button class="quick-btn" onclick="sendQuickAnswer('ปวดหัว', 'ခေါင်းကိုက်သည်')">🤕 ปวดหัว<br>(ခေါင်းကိုက်သည်)</button>
-                <button class="quick-btn" onclick="sendQuickAnswer('ท้องเสีย', 'ဝမ်းပျက်ဝမ်းလျှောသည်')">🤢 ท้องเสีย<br>(ဝမ်းပျက်သည်)</button>
-                <button class="quick-btn" onclick="sendQuickAnswer('ปวดหลัง', 'ကျောကိုက်သည်')">🦴 ปวดหลัง<br>(ကျောကိုက်သည်)</button>
-                <button class="quick-btn" onclick="sendQuickAnswer('ขอใบแพทย์', 'ဆေးလက်မှတ်တောင်းသည်')">📄 ขอใบแพทย์<br>(ဆေးလက်မှတ်)</button>
-                <button class="quick-btn" onclick="sendQuickAnswer('ทำแผล', 'ဒဏ်ရာဆေးထည့်သည်')">🩹 ทำแผล<br>(ဒဏ်ရာဆေးထည့်)</button>
-                <button class="quick-btn" onclick="sendQuickAnswer('เป็นมา 1 วัน', 'ဖြစ်တာ ၁ ရက်ရှိပြီ')">⏱️ เป็นมา 1 วัน<br>(၁ ရက်)</button>
-                <button class="quick-btn" onclick="sendQuickAnswer('เป็นมา 2 วัน', 'ဖြစ်တာ ၂ ရက်ရှိပြီ')">⏱️ เป็นมา 2 วัน<br>(၂ ရက်)</button>
+            <div class="card-patient">
+                <h3 id="txt-title" class="patient-title">လူနာမှတ်တမ်းစနစ်</h3>
+                
+                <!-- ปุ่มสลับ 3 ภาษา -->
+                <div class="lang-container">
+                    <button id="btn-lang-th" class="btn-lang btn-th" onclick="setLang('th')">ไทย</button>
+                    <button id="btn-lang-my" class="btn-lang btn-my active" onclick="setLang('my')">Burmese</button>
+                    <button id="btn-lang-en" class="btn-lang btn-en" onclick="setLang('en')">English</button>
+                </div>
+
+                <!-- ข้อความ/คำถามจากเจ้าหน้าที่ -->
+                <div style="margin-bottom: 10px;">
+                    <span id="txt-officer-msg-label" style="font-size:0.8rem; font-weight:bold; color:#0288d1;">ข้อความจากเจ้าหน้าที่:</span>
+                    <div id="burmeseTextMobile" class="burmese-display" lang="my">မင်္ဂလာပါ</div>
+                </div>
+
+                <div id="patientStatusMobile" class="patient-status">
+                    🔊 เลือกกรอกข้อมูล หรือพูดผ่านไมค์ด้านล่าง
+                </div>
+
+                <!-- ฟอร์มเลือกอาการ ปรับตาม UI แนบ 2 และ Code แนบ 4 -->
+                <form id="patientForm" onsubmit="event.preventDefault(); submitPatientData();">
+                    
+                    <div style="margin-bottom: 8px;">
+                        <label id="txt-sym" class="form-label-custom">อาการสำคัญ (เลือกได้มากกว่า 1 อาการ)</label>
+                        <div class="input-group-custom">
+                            <select id="symptom-select">
+                                <option value="" disabled selected hidden id="opt-placeholder">เลือกอาการ...</option>
+                                <option value="กลืนลำบาก" id="opt-difficultySwallowing" data-key="optDifficultySwallowing">กลืนลำบาก</option>
+                                <option value="ไข้" id="opt-fever" data-key="optFever">ไข้</option>
+                                <option value="คลื่นไส้และอาเจียน" id="opt-nausea" data-key="optNausea">คลื่นไส้และอาเจียน</option>
+                                <option value="เจ็บคอ" id="opt-soreThroat" data-key="optSoreThroat">เจ็บคอ</option>
+                                <option value="เจ็บหน้าอกเวลาไอ" id="opt-chestPainCough" data-key="optChestPainCough">เจ็บหน้าอกเวลาไอ</option>
+                                <option value="ฉีดยา" id="opt-injection" data-key="optInjection">ฉีดยา</option>
+                                <option value="ตัดไหม" id="opt-sutureRemoval" data-key="optSutureRemoval">ตัดไหม</option>
+                                <option value="ตาแดง" id="opt-redEye" data-key="optRedEye">ตาแดง</option>
+                                <option value="ตาแดง คันหรือแสบ" id="opt-redEyeItch" data-key="optRedEyeItch">ตาแดง คันหรือแสบ</option>
+                                <option value="ติ่งเนื้อขอบตาด้านข้าง รู้สึกแสบร้อน ตาแห้ง" id="opt-eyelidGrowth" data-key="optEyelidGrowth">ติ่งเนื้อขอบตาด้านข้าง รู้สึกแสบร้อน ตาแห้ง</option>
+                                <option value="ตุ่มน้ำใส" id="opt-blisters" data-key="optBlisters">ตุ่มน้ำใส</option>
+                                <option value="ตุ่มน้ำใสเล็กๆ บนฝ่ามือและฝ่าเท้า" id="opt-palmBlisters" data-key="optPalmBlisters">ตุ่มน้ำใสเล็กๆ บนฝ่ามือและฝ่าเท้า</option>
+                                <option value="ตุ่มนูนและคัน" id="opt-itchyBumps" data-key="optItchyBumps">ตุ่มนูนและคัน</option>
+                                <option value="ถ่ายเป็นน้ำน้อยกว่า 3 ครั้ง" id="opt-diarrheaLess3" data-key="optDiarrheaLess3">ถ่ายเป็นน้ำน้อยกว่า 3 ครั้ง</option>
+                                <option value="ถ่ายเป็นน้ำมากกว่า 3 ครั้ง" id="opt-diarrheaMore3" data-key="optDiarrheaMore3">ถ่ายเป็นน้ำมากกว่า 3 ครั้ง</option>
+                                <option value="ถ่ายเหลว" id="opt-looseStool" data-key="optLooseStool">ถ่ายเหลว</option>
+                                <option value="ทำแผล" id="opt-woundCare" data-key="optWoundCare">ทำแผล</option>
+                                <option value="น้ำมูกใส" id="opt-runnyNose" data-key="optRunnyNose">น้ำมูกใส</option>
+                                <option value="แน่นหน้าอก" id="opt-chestTightness" data-key="optChestTightness">แน่นหน้าอก</option>
+                                <option value="ปวดขา" id="opt-legPain" data-key="optLegPain">ปวดขา</option>
+                                <option value="ปวดตา" id="opt-eyePain" data-key="optEyePain">ปวดตา</option>
+                                <option value="ปวดท้อง" id="opt-stomachAche" data-key="optStomachAche">ปวดท้อง</option>
+                                <option value="ปวดบริเวณหน้าผากหรือแก้ม" id="opt-sinusPain" data-key="optSinusPain">ปวดบริเวณหน้าผากหรือแก้ม</option>
+                                <option value="ปวดประจำเดือน" id="opt-menstrualPain" data-key="optMenstrualPain">ปวดประจำเดือน</option>
+                                <option value="ปวดเมื่อย" id="opt-aches" data-key="optAches">ปวดเมื่อย</option>
+                                <option value="ปวดเมื่อยตามตัว" id="opt-bodyAches" data-key="optBodyAches">ปวดเมื่อยตามตัว</option>
+                                <option value="ปวดศีรษะ" id="opt-headache" data-key="optHeadache">ปวดศีรษะ</option>
+                                <option value="ปวดแสบปวดร้อนตามเส้นประสาท" id="opt-nervePain" data-key="optNervePain">ปวดแสบปวดร้อนตามเส้นประสาท</option>
+                                <option value="ปวดหลัง" id="opt-backPain" data-key="optBackPain">ปวดหลัง</option>
+                                <option value="ปวดหู วิงเวียนศีรษะ" id="opt-earPainDizzy" data-key="optEarPainDizzy">ปวดหู วิงเวียนศีรษะ</option>
+                                <option value="ผิวแห้งและแตก" id="opt-drySkin" data-key="optDrySkin">ผิวแห้งและแตก</option>
+                                <option value="ผื่นคัน" id="opt-rash" data-key="optRash">ผื่นคัน</option>
+                                <option value="ผื่นมีขุย" id="opt-scalyRash" data-key="optScalyRash">ผื่นมีขุย</option>
+                                <option value="ผื่นมีหนอง" id="opt-pustularRash" data-key="optPustularRash">ผื่นมีหนอง</option>
+                                <option value="แผลฉีดขาด" id="opt-laceration" data-key="optLaceration">แผลฉีดขาด</option>
+                                <option value="แผลถลอก" id="opt-abrasion" data-key="optAbrasion">แผลถลอก</option>
+                                <option value="มองภาพพร่ามัว" id="opt-blurredVision" data-key="optBlurredVision">มองภาพพร่ามัว</option>
+                                <option value="มองแสงสว่างเจ็บตา คลื่นไส้อาเจียน" id="opt-lightSensitivity" data-key="optLightSensitivity">มองแสงสว่างเจ็บตา คลื่นไส้อาเจียน</option>
+                                <option value="มองเห็นรอบๆ ลดลง" id="opt-tunnelVision" data-key="optTunnelVision">มองเห็นรอบๆ ลดลง</option>
+                                <option value="ไม่ขับถ่าย" id="opt-constipation" data-key="optConstipation">ไม่ขับถ่าย</option>
+                                <option value="ไม่ปัสสาวะ" id="opt-urinaryRetention" data-key="optUrinaryRetention">ไม่ปัสสาวะ</option>
+                                <option value="เสียงแหบ" id="opt-hoarseness" data-key="optHoarseness">เสียงแหบ</option>
+                                <option value="แสบร้อนกลางอกหรือเรอเปรี้ยว" id="opt-heartburn" data-key="optHeartburn">แสบร้อนกลางอกหรือเรอเปรี้ยว</option>
+                                <option value="หายใจมีเสียงหวีด" id="opt-wheezing" data-key="optWheezing">หายใจมีเสียงหวีด</option>
+                                <option value="หายใจลำบาก" id="opt-shortnessBreath" data-key="optShortnessBreath">หายใจลำบาก</option>
+                                <option value="หูน้ำหนองหรือน้ำไหล" id="opt-earDischarge" data-key="optEarDischarge">หูน้ำหนองหรือน้ำไหล</option>
+                                <option value="หูอื้อ ได้ยินลดลง" id="opt-hearingLoss" data-key="optHearingLoss">หูอื้อ ได้ยินลดลง</option>
+                                <option value="อ่อนเพลียไม่มีแรง" id="opt-fatigue" data-key="optFatigue">อ่อนเพลียไม่มีแรง</option>
+                                <option value="อุบัติเหตุรถ" id="opt-carAccident" data-key="optCarAccident">อุบัติเหตุรถ</option>
+                                <option value="ไอมีเสมหะ" id="opt-coughPhlegm" data-key="optCoughPhlegm">ไอมีเสมหะ</option>
+                                <option value="ไอแห้ง" id="opt-dryCough" data-key="optDryCough">ไอแห้ง</option>
+                            </select>
+                            <button type="button" id="btn-add" class="btn-add" onclick="addSymptom()">ထည့်မည်</button>
+                        </div>
+
+                        <label id="txt-selected-label" style="font-size: 0.8rem; font-weight: bold; color: #64748b;">แสดงรายการที่เลือก:</label>
+                        <div id="selected-symptoms-container" class="selected-box">
+                            <span style="color: #22c55e; font-weight: 500; font-size: 0.85rem;" id="txt-no-sym">ရွေးချယ်ထားသောစာရင်းကိုပြပါ</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 8px;">
+                        <label id="txt-days" class="form-label-custom">ป่วยมากี่วัน</label>
+                        <input type="number" id="patientDays" class="form-select-custom" placeholder="0" min="0" value="0">
+                    </div>
+
+                    <div style="margin-bottom: 8px;">
+                        <label id="txt-cert" class="form-label-custom">ใบรับรองแพทย์</label>
+                        <select id="patientCert" class="form-select-custom">
+                            <option value="ใช้" id="opt-yes">ယူမည်</option>
+                            <option value="ไม่ใช้" id="opt-no">မယူပါ</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" id="txt-submit" class="btn-submit-patient">ส่งข้อความ / အစီရင်ခံပါ</button>
+                </form>
+
+                <!-- ปุ่มพูดภาษาพม่า -->
+                <button id="mobileMicBtn" class="btn-mic-mobile" onclick="toggleMobileSpeech()">
+                    🎤 กดไมล์พูดภาษาพม่า (မြန်မာလိုပြောဖို့ နှိပ်ပါ)
+                </button>
+
+                <div class="text-center mt-3" style="text-align: center; color: #94a3b8; font-size: 12px; margin-top: 10px;">
+                    @ รพ.สต.บ้านขอม
+                </div>
             </div>
-
-            <!-- 2. ช่องแสดงรายการที่เลือก -->
-            <p style="margin: 8px 0 2px 0; font-size: 0.85rem; font-weight: bold;">แสดงรายการที่เลือก / ข้อความจากเจ้าหน้าที่:</p>
-            <div id="burmeseTextMobile" class="burmese-display" lang="my">မင်္ဂလာပါ</div>
-
-            <div id="patientStatusMobile" class="patient-status">
-                🔊 รอฟังเสียง หรือเลือกคำตอบด่วนด้านบน
-            </div>
-
-            <!-- 3. ช่องพิมพ์นอกเหนือจากรายการ -->
-            <p style="margin: 4px 0 2px 0; font-size: 0.85rem; font-weight: bold;">พิมพ์นอกเหนือจากรายการ (ภาษา ไทย หรือพม่า):</p>
-            <textarea id="patientCustomInput" placeholder="พิมพ์ข้อความที่ต้องการแจ้งเจ้าหน้าที่..."></textarea>
-            <button class="action-btn btn-send" onclick="sendPatientCustomText()">ส่งข้อความ</button>
-
-            <!-- 4. ปุ่มไมค์พูดภาษาพม่า -->
-            <button id="mobileMicBtn" class="btn-mic-mobile" onclick="toggleMobileSpeech()">
-                🎤 กดไมล์พูดภาษาพม่า (မြန်မာလိုပြောဖို့ နှိပ်ပါ)
-            </button>
         </div>
 
     </div>
@@ -195,6 +307,82 @@
         const FIXED_OFFICER_ID = 'bh-bankhom-officer-main';
         let latestBurmeseText = "မင်္ဂလာပါ";
 
+        // --- ชุดข้อมูลภาษาตามเอกสารแนบ 4 ---
+        const langData = {
+            th: {
+                title: "ระบบบันทึกข้อมูลผู้ป่วย", sym: "อาการสำคัญ (เลือกได้มากกว่า 1 อาการ)", days: "ป่วยมากี่วัน", cert: "ใบรับรองแพทย์",
+                optYes: "ใช้", optNo: "ไม่ใช้", submit: "ส่งข้อความ / บันทึกส่งตรวจ",
+                noSym: "แสดงรายการที่เลือก", symAlert: "กรุณาเลือกอาการอย่างน้อย 1 อาการ",
+                optPlaceholder: "เลือกอาการ...", btnAdd: "เพิ่ม", micBtnText: "🎤 กดไมค์พูดภาษาพม่า ( speak Burmese )",
+                officerMsgLabel: "ข้อความจากเจ้าหน้าที่:", selectedLabel: "แสดงรายการที่เลือก:",
+                
+                optDifficultySwallowing: "กลืนลำบาก", optFever: "ไข้", optNausea: "คลื่นไส้และอาเจียน", optSoreThroat: "เจ็บคอ",
+                optChestPainCough: "เจ็บหน้าอกเวลาไอ", optInjection: "ฉีดยา", optSutureRemoval: "ตัดไหม", optRedEye: "ตาแดง",
+                optRedEyeItch: "ตาแดง คันหรือแสบ", optEyelidGrowth: "ติ่งเนื้อขอบตาด้านข้าง รู้สึกแสบร้อน ตาแห้ง", optBlisters: "ตุ่มน้ำใส",
+                optPalmBlisters: "ตุ่มน้ำใสเล็กๆ บนฝ่ามือและฝ่าเท้า", optItchyBumps: "ตุ่มนูนและคัน", optDiarrheaLess3: "ถ่ายเป็นน้ำน้อยกว่า 3 ครั้ง",
+                optDiarrheaMore3: "ถ่ายเป็นน้ำมากกว่า 3 ครั้ง", optLooseStool: "ถ่ายเหลว", optWoundCare: "ทำแผล", optRunnyNose: "น้ำมูกใส",
+                optChestTightness: "แน่นหน้าอก", optLegPain: "ปวดขา", optEyePain: "ปวดตา", optStomachAche: "ปวดท้อง",
+                optSinusPain: "ปวดบริเวณหน้าผากหรือแก้ม", optMenstrualPain: "ปวดประจำเดือน", optAches: "ปวดเมื่อย",
+                optBodyAches: "ปวดเมื่อยตามตัว", optHeadache: "ปวดศีรษะ", optNervePain: "ปวดแสบปวดร้อนตามเส้นประสาท", optBackPain: "ปวดหลัง",
+                optEarPainDizzy: "ปวดหู วิงเวียนศีรษะ", optDrySkin: "ผิวแห้งและแตก", optRash: "ผื่นคัน", optScalyRash: "ผื่นมีขุย",
+                optPustularRash: "ผื่นมีหนอง", optLaceration: "แผลฉีดขาด", optAbrasion: "แผลถลอก", optBlurredVision: "มองภาพพร่ามัว",
+                optLightSensitivity: "มองแสงสว่างเจ็บตา คลื่นไส้อาเจียน", optTunnelVision: "มองเห็นรอบๆ ลดลง", optConstipation: "ไม่ขับถ่าย",
+                optUrinaryRetention: "ไม่ปัสสาวะ", optHoarseness: "เสียงแหบ", optHeartburn: "แสบร้อนกลางอกหรือเรอเปรี้ยว",
+                optWheezing: "หายใจมีเสียงหวีด", optShortnessBreath: "หายใจลำบาก", optEarDischarge: "หูน้ำหนองหรือน้ำไหล",
+                optHearingLoss: "หูอื้อ ได้ยินลดลง", optFatigue: "อ่อนเพลียไม่มีแรง", optCarAccident: "อุบัติเหตุรถ",
+                optCoughPhlegm: "ไอมีเสมหะ", optDryCough: "ไอแห้ง"
+            },
+            my: {
+                title: "လူနာမှတ်တမ်းစနစ်", sym: "ရောဂါလက္ခဏာ (၁ ခုထက်ပို၍ ရွေးချယ်နိုင်သည်)", days: "ဖျားတာဘယ်နှစ်ရက်ရှိပြီလဲ", cert: "ဆေးလက်မှတ်",
+                optYes: "ယူမည်", optNo: "မယူပါ", submit: "ရောဂါလက္ခဏာများကို အစီရင်ခံပါ",
+                noSym: "ရွေးချယ်ထားသောစာရင်းကိုပြပါ", symAlert: "ကျေးဇူးပြု၍ အနည်းဆုံး ရောဂါလက္ခဏာ ၁ ခုကို ရွေးချယ်ပါ။",
+                optPlaceholder: "ရောဂါလက္ခဏာရွေးပါ...", btnAdd: "ထည့်မည်", micBtnText: "🎤 မြန်မာလိုပြောဖို့ နှိပ်ပါ",
+                officerMsgLabel: "ဝန်ထမ်းထံမှ မက်ဆေ့ခ်ျ:", selectedLabel: "ရွေးချယ်ထားသော စာရင်း:",
+
+                optDifficultySwallowing: "မျိုချရခက်ခဲခြင်း", optFever: "ဖျားခြင်း", optNausea: "ပျို့အန်ခြင်း", optSoreThroat: "လည်ပင်းနာခြင်း",
+                optChestPainCough: "ချောင်းဆိုးလျှင် ရင်ဘတ်နာခြင်း", optInjection: "ဆေးထိုးခြင်း", optSutureRemoval: "ချုပ်ရိုးဖြည်ခြင်း", optRedEye: "မျက်စိနီခြင်း",
+                optRedEyeItch: "မျက်စိနီ၊ ယားယံ သို့မဟုတ် ပူစပ်ခြင်း", optEyelidGrowth: "မျက်ခွံအဖုအကျိတ်၊ မျက်စိခြောက်သွေ့ခြင်း", optBlisters: "အရည်ကြည်ဖု",
+                optPalmBlisters: "လက်ဖဝါးနှင့် ခြေဖဝါးတွင် အရည်ကြည်ဖုပေါက်ခြင်း", optItchyBumps: "အဖုအပိမ့်ထွက်၍ ယားယံခြင်း", optDiarrheaLess3: "ဝမ်းလျှောခြင်း (၃ ကြိမ်အောက်)",
+                optDiarrheaMore3: "ဝမ်းလျှောခြင်း (၃ ကြိမ်အထက်)", optLooseStool: "ဝမ်းပျော့ခြင်း", optWoundCare: "အနာဆေးကြောခြင်း", optRunnyNose: "နှာရည်ယိုခြင်း",
+                optChestTightness: "ရင်ဘတ်တင်းကျပ်ခြင်း", optLegPain: "ခြေထောက်ကိုက်ခဲခြင်း", optEyePain: "မျက်လုံးနာခြင်း", optStomachAche: "ဗိုက်နာခြင်း",
+                optSinusPain: "နဖူး သို့မဟုတ် ပါးပြင်ကိုက်ခဲခြင်း", optMenstrualPain: "ရာသီလာစဉ် ကိုက်ခဲခြင်း", optAches: "ကိုယ်လက်ကိုက်ခဲခြင်း",
+                optBodyAches: "တစ်ကိုယ်လုံး ကိုက်ခဲခြင်း", optHeadache: "ခေါင်းကိုက်ခြင်း", optNervePain: "အာရုံကြောတစ်လျှောက် ပူစပ်ကိုက်ခဲခြင်း", optBackPain: "ခါးနာခြင်း",
+                optEarPainDizzy: "နားကိုက်၊ ခေါင်းမူးခြင်း", optDrySkin: "အသားအရေခြောက်သွေ့ကွဲအက်ခြင်း", optRash: "အင်ပြင်ထခြင်း", optScalyRash: "အကြေးခွံကဲ့သို့ အဖုများ",
+                optPustularRash: "ပြည်တည်နာ", optLaceration: "ပြတ်ရှဒဏ်ရာ", optAbrasion: "ပွန်းပဲ့ဒဏ်ရာ", optBlurredVision: "အမြင်အာရုံ ဝေဝါးခြင်း",
+                optLightSensitivity: "အလင်းရောင်ကြည့်လျှင် မျက်စိနာ၊ ပျို့အန်ခြင်း", optTunnelVision: "ဘေးပတ်လည် အမြင်အာရုံ လျော့နည်းခြင်း", optConstipation: "ဝမ်းချုပ်ခြင်း",
+                optUrinaryRetention: "ဆီးမသွားနိုင်ခြင်း", optHoarseness: "အသံဝင်ခြင်း", optHeartburn: "ရင်ပူခြင်း သို့မဟုတ် လေချဉ်တက်ခြင်း",
+                optWheezing: "အသက်ရှူလျှင် အသံမြည်ခြင်း", optShortnessBreath: "အသက်ရှူရခက်ခဲခြင်း", optEarDischarge: "နားမှပြည်/အရည်ယိုခြင်း",
+                optHearingLoss: "နားအူခြင်း၊ ကြားနိုင်စွမ်းလျော့နည်းခြင်း", optFatigue: "အလွန်မောပန်းနွမ်းနယ်ခြင်း", optCarAccident: "ယာဉ်မတော်တဆမှု",
+                optCoughPhlegm: "ချွဲပါသောချောင်းဆိုးခြင်း", optDryCough: "ချောင်းခြောက်ဆိုးခြင်း"
+            },
+            en: {
+                title: "Patient Registration", sym: "Symptoms (Multiple selection allowed)", days: "How many days?", cert: "Medical Certificate",
+                optYes: "Yes", optNo: "No", submit: "Submit Symptoms",
+                noSym: "Selected items will appear here", symAlert: "Please select at least 1 symptom.",
+                optPlaceholder: "Select symptom...", btnAdd: "Add", micBtnText: "🎤 Press to speak Burmese",
+                officerMsgLabel: "Message from Officer:", selectedLabel: "Selected List:",
+
+                optDifficultySwallowing: "Difficulty swallowing", optFever: "Fever", optNausea: "Nausea and vomiting", optSoreThroat: "Sore throat",
+                optChestPainCough: "Chest pain when coughing", optInjection: "Injection", optSutureRemoval: "Suture removal", optRedEye: "Red eye",
+                optRedEyeItch: "Red eye, itchy or burning", optEyelidGrowth: "Eyelid growth, burning, dry eye", optBlisters: "Blisters",
+                optPalmBlisters: "Small blisters on palms and soles", optItchyBumps: "Itchy bumps", optDiarrheaLess3: "Diarrhea < 3 times",
+                optDiarrheaMore3: "Diarrhea > 3 times", optLooseStool: "Loose stool", optWoundCare: "Wound care", optRunnyNose: "Runny nose",
+                optChestTightness: "Chest tightness", optLegPain: "Leg pain", optEyePain: "Eye pain", optStomachAche: "Stomach ache",
+                optSinusPain: "Sinus pain (forehead/cheek)", optMenstrualPain: "Menstrual pain", optAches: "Aches",
+                optBodyAches: "Body aches", optHeadache: "Headache", optNervePain: "Nerve pain", optBackPain: "Back pain",
+                optEarPainDizzy: "Ear pain, dizziness", optDrySkin: "Dry, cracked skin", optRash: "Rash", optScalyRash: "Scaly rash",
+                optPustularRash: "Pustular rash", optLaceration: "Laceration", optAbrasion: "Abrasion", optBlurredVision: "Blurred vision",
+                optLightSensitivity: "Light sensitivity, nausea, vomiting", optTunnelVision: "Reduced peripheral vision", optConstipation: "Constipation",
+                optUrinaryRetention: "Urinary retention", optHoarseness: "Hoarseness", optHeartburn: "Heartburn or acid reflux",
+                optWheezing: "Wheezing", optShortnessBreath: "Shortness of breath", optEarDischarge: "Ear discharge",
+                optHearingLoss: "Hearing loss", optFatigue: "Fatigue", optCarAccident: "Car accident",
+                optCoughPhlegm: "Cough with phlegm", optDryCough: "Dry cough"
+            }
+        };
+
+        let currentLang = 'my'; // ค่าเริ่มต้นภาษาพม่า
+        let selectedSymptoms = [];
+
         const urlParams = new URLSearchParams(window.location.search);
         const isPatientMode = urlParams.get('mode') === 'patient';
 
@@ -202,6 +390,7 @@
             document.getElementById('officerPanel').style.display = 'none';
             document.getElementById('patientMobilePanel').style.display = 'flex';
             initPatientMode();
+            setLang('my'); // ตั้งเริ่มต้นฝั่งผู้ป่วยเป็นภาษาพม่า
         } else {
             initOfficerMode();
         }
@@ -226,7 +415,12 @@
 
                 conn.on('data', (data) => {
                     if (data.type === 'PATIENT_SPEECH') {
-                        document.getElementById('thaiTranslation').innerText = data.text;
+                        // ปรับปรุง: แปลภาษาพม่าเป็นไทยก่อนแสดงผลถ้าข้อมูลที่ส่งมายังคงเป็นพม่า
+                        if (/[\u1000-\u109F]/.test(data.text)) {
+                            translateBurmeseToThai(data.text, 'thaiTranslation');
+                        } else {
+                            document.getElementById('thaiTranslation').innerText = data.text;
+                        }
                     }
                 });
 
@@ -341,37 +535,111 @@
                     } else if (data.type === 'CLEAR_SCREEN') {
                         latestBurmeseText = "မင်္ဂလာပါ";
                         document.getElementById('burmeseTextMobile').innerText = 'မင်္ဂလာပါ';
-                        document.getElementById('patientStatusMobile').innerText = '🔊 รอฟังเสียง หรือเลือกคำตอบด่วนด้านบน';
+                        document.getElementById('patientStatusMobile').innerText = '🔊 รอฟังเสียง หรือกรอกข้อมูลด้านล่าง';
                         document.getElementById('patientStatusMobile').style.color = '#388e3c';
+                        selectedSymptoms = [];
+                        renderSymptoms();
+                        document.getElementById('patientDays').value = "0";
                     }
                 });
             });
         }
 
-        // ฟังก์ชันส่งคำตอบด่วนจากปุ่มเลือก
-        function sendQuickAnswer(thaiText, burmeseText) {
-            document.getElementById('burmeseTextMobile').innerText = burmeseText;
-            document.getElementById('patientStatusMobile').innerText = '✅ ส่งคำตอบแล้ว: ' + thaiText;
-            document.getElementById('patientStatusMobile').style.color = '#2e7d32';
+        // --- ระบบสลับภาษาและการทำงานของ Multi-select ฝั่งผู้ป่วย ---
+        function setLang(lang) {
+            currentLang = lang;
+            const d = langData[lang];
+            
+            document.getElementById('txt-title').innerText = d.title;
+            document.getElementById('txt-sym').innerText = d.sym;
+            document.getElementById('txt-days').innerText = d.days;
+            document.getElementById('txt-cert').innerText = d.cert;
+            document.getElementById('opt-yes').innerText = d.optYes;
+            document.getElementById('opt-no').innerText = d.optNo;
+            document.getElementById('txt-submit').innerText = d.submit;
+            document.getElementById('opt-placeholder').innerText = d.optPlaceholder;
+            document.getElementById('btn-add').innerText = d.btnAdd;
+            document.getElementById('mobileMicBtn').innerHTML = d.micBtnText;
+            document.getElementById('txt-officer-msg-label').innerText = d.officerMsgLabel;
+            document.getElementById('txt-selected-label').innerText = d.selectedLabel;
 
-            if (conn && conn.open) {
-                conn.send({ type: 'PATIENT_SPEECH', text: thaiText });
-            }
+            // อัปเดตข้อความรายการเลือกอาการ
+            const options = document.querySelectorAll('#symptom-select option[data-key]');
+            options.forEach(opt => {
+                const key = opt.getAttribute('data-key');
+                if (d[key]) opt.innerText = d[key];
+            });
+
+            // อัปเดตปุ่มภาษา active
+            document.querySelectorAll('.btn-lang').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-lang-${lang}`).classList.add('active');
+
+            renderSymptoms();
         }
 
-        // ฟังก์ชันส่งข้อความเพิ่มเติมจากผู้ป่วย
-        async function sendPatientCustomText() {
-            const customInput = document.getElementById('patientCustomInput').value;
-            if (!customInput) return;
+        function addSymptom() {
+            const select = document.getElementById('symptom-select');
+            const valTH = select.value; // ดึงค่าภาษาไทยเพื่อนำไปส่งเจ้าหน้าที่
+            
+            if (!valTH) return;
 
-            document.getElementById('burmeseTextMobile').innerText = customInput;
-            document.getElementById('patientStatusMobile').innerText = '✅ ส่งข้อความเรียบร้อย';
+            const selectedOption = select.options[select.selectedIndex];
+            const key = selectedOption.getAttribute('data-key');
+
+            const isAlreadyAdded = selectedSymptoms.some(item => item.valTH === valTH);
+            if (!isAlreadyAdded) {
+                selectedSymptoms.push({ valTH: valTH, key: key });
+                renderSymptoms();
+            }
+            select.value = "";
+        }
+
+        function removeSymptom(valToRemove) {
+            selectedSymptoms = selectedSymptoms.filter(item => item.valTH !== valToRemove);
+            renderSymptoms();
+        }
+
+        function renderSymptoms() {
+            const container = document.getElementById('selected-symptoms-container');
+            
+            if (selectedSymptoms.length === 0) {
+                container.innerHTML = `<span style="color: #22c55e; font-weight: 500; font-size: 0.85rem;" id="txt-no-sym">${langData[currentLang].noSym}</span>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            selectedSymptoms.forEach(item => {
+                const tagText = langData[currentLang][item.key];
+                const tag = document.createElement('span');
+                tag.className = 'tag-item';
+                tag.innerHTML = `
+                    ${tagText}
+                    <button type="button" class="tag-remove" onclick="removeSymptom('${item.valTH}')">&times;</button>
+                `;
+                container.appendChild(tag);
+            });
+        }
+
+        // --- ส่งข้อมูลสรุปจากผู้ป่วยกลับไปให้เจ้าหน้าที่เป็นภาษาไทย[cite: 3] ---
+        function submitPatientData() {
+            if (selectedSymptoms.length === 0) {
+                alert(langData[currentLang].symAlert);
+                return;
+            }
+
+            const symptomsTH = selectedSymptoms.map(item => item.valTH).join(', ');
+            const days = document.getElementById('patientDays').value || '0';
+            const cert = document.getElementById('patientCert').value;
+
+            // สร้างข้อความภาษาไทยส่งให้เจ้าหน้าที่[cite: 3]
+            const summaryTH = `อาการ: ${symptomsTH} | เป็นมา: ${days} วัน | ใบรับรองแพทย์: ${cert}`;
+
+            document.getElementById('patientStatusMobile').innerText = '✅ ส่งข้อมูลเรียบร้อย';
             document.getElementById('patientStatusMobile').style.color = '#2e7d32';
 
             if (conn && conn.open) {
-                conn.send({ type: 'PATIENT_SPEECH', text: customInput });
+                conn.send({ type: 'PATIENT_SPEECH', text: summaryTH });
             }
-            document.getElementById('patientCustomInput').value = '';
         }
 
         let mobileRecognition;
@@ -388,9 +656,20 @@
                 const speechText = event.results[0][0].transcript;
                 document.getElementById('burmeseTextMobile').innerText = "ที่คุณพูด: " + speechText;
                 
-                if (conn && conn.open) {
-                    conn.send({ type: 'PATIENT_SPEECH', text: speechText });
-                }
+                // แปลเสียงพูดภาษาพม่าเป็นภาษาไทยก่อนส่งให้เจ้าหน้าที่[cite: 3]
+                fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(speechText)}&langpair=my|th`)
+                    .then(res => res.json())
+                    .then(data => {
+                        const translatedTH = data.responseData.translatedText;
+                        if (conn && conn.open) {
+                            conn.send({ type: 'PATIENT_SPEECH', text: translatedTH + " (จากเสียงพูดพม่า)" });
+                        }
+                    })
+                    .catch(() => {
+                        if (conn && conn.open) {
+                            conn.send({ type: 'PATIENT_SPEECH', text: speechText });
+                        }
+                    });
             };
 
             mobileRecognition.onend = function() {
@@ -398,7 +677,7 @@
                 const micBtn = document.getElementById('mobileMicBtn');
                 if(micBtn) {
                     micBtn.classList.remove('recording');
-                    micBtn.innerHTML = '🎤 กดไมล์พูดภาษาพม่า (မြန်မာလိုပြောဖို့ နှိပ်ပါ)';
+                    micBtn.innerHTML = langData[currentLang].micBtnText;
                 }
                 document.getElementById('patientStatusMobile').innerText = '🔊 ส่งเสียงเรียบร้อย';
                 document.getElementById('patientStatusMobile').style.color = '#388e3c';

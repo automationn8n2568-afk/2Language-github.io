@@ -37,20 +37,8 @@
         select.question-select { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #0288d1; background: #e1f5fe; font-size: 0.9rem; cursor: pointer; }
         select.question-select:hover { background: #b3e5fc; }
 
-        textarea { width: 100%; height: 50px; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 0.95rem; margin-bottom: 8px; resize: vertical; }
+        textarea { width: 100%; height: 50px; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 0.95rem; margin-bottom: 8px; resize: none; }
         
-        .patient-textarea {
-            width: 100%;
-            height: 70px;
-            padding: 10px;
-            border-radius: 8px;
-            border: 2px solid #81c784;
-            font-size: 1.05rem;
-            margin-bottom: 8px;
-            resize: vertical;
-            background-color: #ffffff;
-        }
-
         button.action-btn { padding: 10px; font-size: 0.95rem; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
         .btn-send { background: #0288d1; color: white; width: 100%; margin-bottom: 8px; }
         .btn-send:hover { background: #0277bd; }
@@ -61,11 +49,13 @@
         .btn-mic-officer { background: #4caf50; color: white; font-size: 1.05rem; padding: 12px; border-radius: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; border: none; font-weight: bold; margin-bottom: 15px; }
         .btn-mic-officer.recording { background: #f44336; animation: pulse 1.5s infinite; }
 
+        /* ปรับขนาดตัวอักษรฝั่งผู้ป่วยให้เล็กลงพอดีกับหน้าจอมือถือ */
         .burmese-display { font-size: 1.2rem; font-weight: bold; color: #1b5e20; background: #ffffff; padding: 12px; border-radius: 8px; border: 2px dashed #81c784; min-height: 70px; margin-top: 5px; text-align: center; display: flex; align-items: center; justify-content: center; word-break: break-word; }
-        .thai-result { font-size: 1.2rem; color: #d32f2f; font-weight: bold; background: #fff3e0; padding: 12px; border-radius: 8px; min-height: 70px; border-left: 5px solid #ff9800; word-break: break-word; }
+        .thai-result { font-size: 1.2rem; color: #d32f2f; font-weight: bold; background: #fff3e0; padding: 12px; border-radius: 8px; min-height: 70px; border-left: 5px solid #ff9800; }
 
         .patient-status { text-align: center; font-size: 0.9rem; font-weight: bold; color: #388e3c; margin: 6px 0; padding: 4px; background: #e8f5e9; border-radius: 6px; }
 
+        /* ปุ่มด่วนสำหรับผู้ป่วย (Quick Response) */
         .quick-btn-container { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 5px; }
         .quick-btn { background: #e0f2f1; color: #00695c; border: 1px solid #4db6ac; padding: 10px; border-radius: 8px; font-size: 0.9rem; font-weight: bold; cursor: pointer; text-align: center; }
         .quick-btn:hover { background: #b2dfdb; }
@@ -162,7 +152,7 @@
             <div id="thaiTranslation" class="thai-result">คำตอบจากผู้ป่วยจะมาแสดงตรงนี้...</div>
         </div>
 
-        <!-- 2. หน้าจอมือถือผู้ป่วย -->
+        <!-- 2. หน้าจอมือถือผู้ป่วย (ปรับใหม่ตามแนบ 2) -->
         <div id="patientMobilePanel" class="panel patient-mobile-panel">
             <h2>🇲🇲 ฝั่งผู้ป่วย (Patient Display)</h2>
             
@@ -178,17 +168,17 @@
                 <button class="quick-btn" onclick="sendQuickAnswer('เป็นมา 2 วัน', 'ဖြစ်တာ ၂ ရက်ရှိပြီ')">⏱️ เป็นมา 2 วัน<br>(၂ ရက်)</button>
             </div>
 
-            <!-- 2. ช่องแสดงรายการที่เลือก (เปลี่ยนหัวข้อเป็นภาษาพม่า) -->
-            <p style="margin: 8px 0 2px 0; font-size: 0.85rem; font-weight: bold;">ပြသရန် အချက်အလက်များ (แสดงรายการ):</p>
+            <!-- 2. ช่องแสดงรายการที่เลือก -->
+            <p style="margin: 8px 0 2px 0; font-size: 0.85rem; font-weight: bold;">แสดงรายการที่เลือก / ข้อความจากเจ้าหน้าที่:</p>
             <div id="burmeseTextMobile" class="burmese-display" lang="my">မင်္ဂလာပါ</div>
 
             <div id="patientStatusMobile" class="patient-status">
                 🔊 รอฟังเสียง หรือเลือกคำตอบด่วนด้านบน
             </div>
 
-            <!-- 3. ช่องพิมพ์นอกเหนือจากรายการ (เปลี่ยนหัวข้อเป็นภาษาพม่า) -->
-            <p style="margin: 6px 0 2px 0; font-size: 0.85rem; font-weight: bold;">စာရင်းပြင်ပ အခြားအချက်အလက်များ ရိုက်ထည့်ရန် (พิมพ์นอกเหนือจากรายการ):</p>
-            <textarea id="patientCustomInput" class="patient-textarea" placeholder="พิมพ์ข้อความเพิ่มเติมที่ต้องการแจ้งเจ้าหน้าที่..."></textarea>
+            <!-- 3. ช่องพิมพ์นอกเหนือจากรายการ -->
+            <p style="margin: 4px 0 2px 0; font-size: 0.85rem; font-weight: bold;">พิมพ์นอกเหนือจากรายการ (ภาษา ไทย หรือพม่า):</p>
+            <textarea id="patientCustomInput" placeholder="พิมพ์ข้อความที่ต้องการแจ้งเจ้าหน้าที่..."></textarea>
             <button class="action-btn btn-send" onclick="sendPatientCustomText()">ส่งข้อความ</button>
 
             <!-- 4. ปุ่มไมค์พูดภาษาพม่า -->
@@ -203,7 +193,7 @@
         let peer;
         let conn;
         const FIXED_OFFICER_ID = 'bh-bankhom-officer-main';
-        let accumulatedPatientTexts = []; // เก็บรายการที่เลือกสะสมหลายรายการ
+        let latestBurmeseText = "မင်္ဂလာပါ";
 
         const urlParams = new URLSearchParams(window.location.search);
         const isPatientMode = urlParams.get('mode') === 'patient';
@@ -234,9 +224,9 @@
                 document.getElementById('connectionStatus').className = 'connection-status status-connected';
                 document.getElementById('connectionStatus').innerText = '🟢 มือถือผู้ป่วยเชื่อมต่อสำเร็จแล้ว';
 
-                conn.on('data', async (data) => {
+                conn.on('data', (data) => {
                     if (data.type === 'PATIENT_SPEECH') {
-                        await translateToThaiAndDisplay(data.text);
+                        document.getElementById('thaiTranslation').innerText = data.text;
                     }
                 });
 
@@ -257,7 +247,6 @@
         function clearCase() {
             document.getElementById('customText').value = '';
             document.getElementById('thaiTranslation').innerText = 'คำตอบจากผู้ป่วยจะมาแสดงตรงนี้...';
-            accumulatedPatientTexts = [];
             if (conn && conn.open) {
                 conn.send({ type: 'CLEAR_SCREEN' });
             }
@@ -287,6 +276,7 @@
         }
 
         function sendDataToPatient(myText) {
+            latestBurmeseText = myText;
             if (conn && conn.open) {
                 conn.send({ type: 'QUESTION', text: myText });
             }
@@ -343,13 +333,13 @@
 
                 conn.on('data', (data) => {
                     if (data.type === 'QUESTION') {
-                        accumulatedPatientTexts.push(data.text);
-                        updatePatientDisplay();
+                        latestBurmeseText = data.text;
+                        document.getElementById('burmeseTextMobile').innerText = data.text;
                         document.getElementById('patientStatusMobile').innerText = '🔔 มีข้อความใหม่จากเจ้าหน้าที่';
                         document.getElementById('patientStatusMobile').style.color = '#d32f2f';
                         speakBurmese(data.text);
                     } else if (data.type === 'CLEAR_SCREEN') {
-                        accumulatedPatientTexts = [];
+                        latestBurmeseText = "မင်္ဂလာပါ";
                         document.getElementById('burmeseTextMobile').innerText = 'မင်္ဂလာပါ';
                         document.getElementById('patientStatusMobile').innerText = '🔊 รอฟังเสียง หรือเลือกคำตอบด่วนด้านบน';
                         document.getElementById('patientStatusMobile').style.color = '#388e3c';
@@ -358,44 +348,28 @@
             });
         }
 
-        // ฟังก์ชันอัปเดตหน้าจอผู้ป่วยให้แสดงรายการที่เลือกสะสมทั้งหมด (มากกว่า 1 อาการ)
-        function updatePatientDisplay() {
-            if (accumulatedPatientTexts.length > 0) {
-                document.getElementById('burmeseTextMobile').innerText = accumulatedPatientTexts.join(' , ');
-            } else {
-                document.getElementById('burmeseTextMobile').innerText = 'မင်္ဂလာပါ';
-            }
-        }
-
-        // ฟังก์ชันส่งคำตอบด่วนจากปุ่มเลือก (สะสมรายการ)
+        // ฟังก์ชันส่งคำตอบด่วนจากปุ่มเลือก
         function sendQuickAnswer(thaiText, burmeseText) {
-            accumulatedPatientTexts.push(burmeseText);
-            updatePatientDisplay();
-            
-            document.getElementById('patientStatusMobile').innerText = '✅ เพิ่มรายการ: ' + thaiText;
+            document.getElementById('burmeseTextMobile').innerText = burmeseText;
+            document.getElementById('patientStatusMobile').innerText = '✅ ส่งคำตอบแล้ว: ' + thaiText;
             document.getElementById('patientStatusMobile').style.color = '#2e7d32';
 
             if (conn && conn.open) {
-                // ส่งรายการทั้งหมดที่สะสมรวมกันไปให้เจ้าหน้าที่
-                const combinedText = accumulatedPatientTexts.join(' , ');
-                conn.send({ type: 'PATIENT_SPEECH', text: combinedText });
+                conn.send({ type: 'PATIENT_SPEECH', text: thaiText });
             }
         }
 
-        // ฟังก์ชันส่งข้อความเพิ่มเติมจากผู้ป่วย (สะสมรายการ)
-        function sendPatientCustomText() {
-            const customInput = document.getElementById('patientCustomInput').value.trim();
+        // ฟังก์ชันส่งข้อความเพิ่มเติมจากผู้ป่วย
+        async function sendPatientCustomText() {
+            const customInput = document.getElementById('patientCustomInput').value;
             if (!customInput) return;
 
-            accumulatedPatientTexts.push(customInput);
-            updatePatientDisplay();
-
+            document.getElementById('burmeseTextMobile').innerText = customInput;
             document.getElementById('patientStatusMobile').innerText = '✅ ส่งข้อความเรียบร้อย';
             document.getElementById('patientStatusMobile').style.color = '#2e7d32';
 
             if (conn && conn.open) {
-                const combinedText = accumulatedPatientTexts.join(' , ');
-                conn.send({ type: 'PATIENT_SPEECH', text: combinedText });
+                conn.send({ type: 'PATIENT_SPEECH', text: customInput });
             }
             document.getElementById('patientCustomInput').value = '';
         }
@@ -412,12 +386,10 @@
 
             mobileRecognition.onresult = function(event) {
                 const speechText = event.results[0][0].transcript;
-                accumulatedPatientTexts.push(speechText);
-                updatePatientDisplay();
+                document.getElementById('burmeseTextMobile').innerText = "ที่คุณพูด: " + speechText;
                 
                 if (conn && conn.open) {
-                    const combinedText = accumulatedPatientTexts.join(' , ');
-                    conn.send({ type: 'PATIENT_SPEECH', text: combinedText });
+                    conn.send({ type: 'PATIENT_SPEECH', text: speechText });
                 }
             };
 
@@ -450,23 +422,6 @@
                 status.style.color = '#d32f2f';
             } else {
                 mobileRecognition.stop();
-            }
-        }
-
-        async function translateToThaiAndDisplay(inputText) {
-            const targetEl = document.getElementById('thaiTranslation');
-            targetEl.innerText = "กำลังแปลคำตอบ: " + inputText + "...";
-            try {
-                const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(inputText)}&langpair=Autodetect|th`);
-                const data = await res.json();
-                if (data && data.responseData && data.responseData.translatedText) {
-                    targetEl.innerText = data.responseData.translatedText;
-                } else {
-                    targetEl.innerText = inputText;
-                }
-            } catch (err) {
-                console.error("Translation error", err);
-                targetEl.innerText = inputText;
             }
         }
 
